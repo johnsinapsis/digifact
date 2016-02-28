@@ -19,10 +19,11 @@
      		</h4>
      	</div>
      	<div class="divnum">
+            @inject('resolucion','App\Http\Controllers\ResulController')
      		@if (isset($numfac))
-            <h3 style="margin-top:6px;" align="center">Nº&#32;&#32;&#32;{{$numfac}}</h3>
+            <h3 style="margin-top:6px;" align="center">Nº&#32;&#32;&#32;{{$resolucion->resActiva($resol)->prefijo}} {{$numfac}}</h3>
             @else
-            <h3 style="margin-top:6px;" align="center">Nº&#32;&#32;&#32;XXXX</h3>
+            <h3 style="margin-top:6px;" align="center">Nº&#32;&#32;&#32;{{$resolucion->resActiva($resol)->prefijo}} XXXX</h3>
             @endif
      	</div>
      	<div class="cabfact">
@@ -56,11 +57,10 @@
      		</table>
      		<div class="resol">
      			AUTORIZA RESOL. DIAN <br>
-     			@inject('resolucion','App\Http\Controllers\ResulController')
-     			IBAGUÉ No. {{$resolucion->resActiva()->num_resol}} <br>
-     			FECHA: {{Carbon\Carbon::createFromFormat('Y-m-d',$resolucion->resActiva()->fec_resol)->format('Y/m/d')}}
-     			DEL No. {{$resolucion->resActiva()->ini_consec}} AL No. {{$resolucion->resActiva()->fin_consec}} <br>
-     			NOTA: LA PRESENTE RESOLUCIÓN NOS EXONERA REALIZAR EL COBRO DE I.V.A.
+     			
+     			IBAGUÉ No. {{$resolucion->resActiva($resol)->num_resol}} <br>
+     			FECHA: {{Carbon\Carbon::createFromFormat('Y-m-d',$resolucion->resActiva($resol)->fec_resol)->format('Y/m/d')}}
+     			DEL No. {{$resolucion->resActiva($resol)->ini_consec}} AL No. {{$resolucion->resActiva($resol)->fin_consec}} <br>
      		</div>
      		
      		<div class="cliente">Cliente:</div>

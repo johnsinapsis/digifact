@@ -40,14 +40,14 @@ header {
 }
 
 .marcagua{
-  width:409px;height:297px;
+  width:409px;height:370px;
   position: absolute;
-  margin-top: 400px;
-  margin-left: 120px;
+  margin-top: 370px;
+  margin-left: 100px;
   filter:alpha(opacity=25);
   -moz-opacity:.25;
   opacity:.25;
-  background: url(marcagua.jpg) no-repeat;
+  background: url(marcagua.png) no-repeat;
 }
 
 .header{

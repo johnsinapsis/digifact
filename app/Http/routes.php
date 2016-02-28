@@ -218,8 +218,13 @@ Route::group(['middleware' => ['auth','role:8']], function () {
 	]);   
 
 	Route::get('pdfconfig/{id}', [
-		'uses' => 'ConfigController@show',
+		'uses' => 'ConfigController@selectResol',
 		'as' => 'pdfconfig'
+		]);
+
+	Route::post('pdfconfig/{id}', [
+		'uses' => 'ConfigController@show',
+		'as' => 'pdfview'
 		]);
 
 	});

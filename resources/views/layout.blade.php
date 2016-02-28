@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Soresoft | Facturación</title>
+    <title>Digisoft | Facturación</title>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico"> 
     <!-- <link rel="shortcut icon" type="image/x-icon" href="{{{ asset('favicon.png') }}}"> -->
     <!-- Tell the browser to be responsive to screen width -->
@@ -44,7 +44,7 @@
           <!-- mini logo for sidebar mini 50x50 pixels 
           <span class="logo-mini"><b>A</b>LT</span>-->
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><b>Soresoft Facturación</b></span>
+          <span class="logo-lg"><b>Digisoft Facturación</b></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">

@@ -60,8 +60,8 @@ class ResulController extends Controller
         else
          {
 
-            Resolucion::where('estado', true)
-                    ->update(['estado' => false]);
+            /*Resolucion::where('estado', true)
+                    ->update(['estado' => false]);*/
             $resol = new Resolucion([
                 'num_resol' => $request->get('numresol'),
                 'fec_resol' => $request->get('fecresol'),
@@ -128,6 +128,7 @@ class ResulController extends Controller
         'fecedit' => $resedit->fec_resol,
         'iniedit' => $resedit->ini_consec,
         'finedit' => $resedit->fin_consec,
+        'prefijo' => $resedit->prefijo,
         'actedit' => $resedit->act_consec,
         'notedit' => $resedit->nota_resol,
         'stoedit' => $resedit->stock_consec
@@ -162,7 +163,7 @@ class ResulController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function resActiva()
+    public function resActiva($id)
     {
          $resol = Resolucion:: where('estado',true)
                                ->first();

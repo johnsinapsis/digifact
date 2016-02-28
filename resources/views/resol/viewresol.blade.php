@@ -19,7 +19,7 @@
                 <div class="box-body chat" id="chat-box" >
                   <!-- chat item -->
                   <div class="item">
-                    {!! Html::image('dist/img/logosore.png', "User image", array('class' => 'online')) !!}
+                    {!! Html::image('dist/img/logodigi.png', "User image", array('class' => 'online')) !!}
                     <p class="message">
                       <a href="#" class="name">
                         Crear Resoluciones
@@ -78,11 +78,21 @@
                             </div>
                              <div class="form-group">
                                 <label class="col-md-4 control-label">Avisar cuando falten:</label>
-                                <div class="input-group input-group-sm">
+                                <div class="input-group col-md-8">
                                     @if (isset($idedit))
                                     <input type="number"  class="form-control input-sm" name="stock" value="{{$stoedit}}" style="width:60px" required>
                                     @else
                                     <input type="number"  class="form-control input-sm" name="stock" value="" style="width:60px" required>
+                                    @endif
+                                </div>
+                            </div>
+                             <div class="form-group">
+                                <label class="col-md-4 control-label">Prefijo:</label>
+                                <div class="input-group col-md-8">
+                                    @if (isset($idedit))
+                                    <input type="text"  class="form-control input-sm" name="prefijo" value="{{$prefijo}}" style="width:60px"/>
+                                    @else
+                                    <input type="text"  class="form-control input-sm" name="prefijo" value="" style="width:60px" />
                                     @endif
                                 </div>
                             </div>

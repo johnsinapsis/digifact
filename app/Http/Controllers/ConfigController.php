@@ -82,13 +82,24 @@ class ConfigController extends Controller
          }
     }
 
+    public function selectResol($id)
+    { 
+        $config = Configuracion:: where('id',$id)
+                            ->first();
+        $view = View('pdf.selectResol',[
+            'id'=> $id,
+            'logotipo' => $config->logotipo,
+            ]);
+        return $view;
+    }
+
     /**
      * Display the specified resource.
      *
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show($id,Request $request)
     {
        $config = Configuracion:: where('id',$id)
                             ->first();
@@ -103,7 +114,8 @@ class ConfigController extends Controller
         'tel_factura' => $config->tel_factura,
         'mailfactura' => $config->mailfactura,
         'web_factura' => $config->web_factura,
-        'nota_factura'=> $config->nota_factura
+        'nota_factura'=> $config->nota_factura,
+        'resol'=> $request->get('resol')
         ]);
        //return $view;
        

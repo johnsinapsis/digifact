@@ -9,7 +9,7 @@
         <div class="panel panel-default">
           <div class="panel-heading"><h3 align="center">Bienvenido</h3></div> 
             <div class="panel-body" style="align">
-              {!! Html::image('dist/img/logosore.png', "Logo", array('width' => '70%', 'height' => '70%', 'style' => 'margin-left:50px')) !!}
+              {!! Html::image('dist/img/logo-sadat.png', "Logo", array('width' => '85%', 'height' => '85%', 'style' => 'margin-left:50px')) !!}
             </div>
           </div>
         </div>

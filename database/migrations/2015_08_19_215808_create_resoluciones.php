@@ -18,6 +18,7 @@ class CreateResoluciones extends Migration
             $table->date('fec_resol');
             $table->integer('ini_consec');
             $table->integer('fin_consec');
+            $table->string('prefijo',5);
             $table->boolean('estado')->default(false);
             $table->string('nota_resol');
             $table->integer('act_consec');

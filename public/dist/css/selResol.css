@@ -1,0 +1,11 @@
+.clearfix {
+  text-align: center;
+}
+
+
+.logo {
+   height: 120px;
+  /* position: absolute; */
+  margin-top: 10px;
+}
+
