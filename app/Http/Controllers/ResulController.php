@@ -104,7 +104,8 @@ class ResulController extends Controller
         'fecsel' => $ressel->fec_resol,
         'inisel' => $ressel->ini_consec,
         'finsel' => $ressel->fin_consec,
-        'actsel' => $ressel->act_consec
+        'actsel' => $ressel->act_consec,
+        'prefijo' => $ressel->prefijo,
         ]);
     }
 
@@ -126,6 +127,7 @@ class ResulController extends Controller
         'idedit'=> $id,
         'numedit' => $resedit->num_resol,
         'fecedit' => $resedit->fec_resol,
+        'tipo_fac'=> $resedit->tipo_fac,
         'iniedit' => $resedit->ini_consec,
         'finedit' => $resedit->fin_consec,
         'prefijo' => $resedit->prefijo,
@@ -166,6 +168,7 @@ class ResulController extends Controller
     public function resActiva($id)
     {
          $resol = Resolucion:: where('estado',true)
+                            -> where('id',$id)
                                ->first();
                              
         

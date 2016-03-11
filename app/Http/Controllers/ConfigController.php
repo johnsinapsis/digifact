@@ -93,6 +93,8 @@ class ConfigController extends Controller
         return $view;
     }
 
+    
+
     /**
      * Display the specified resource.
      *

@@ -88,11 +88,24 @@
                             </div>
                              <div class="form-group">
                                 <label class="col-md-4 control-label">Prefijo:</label>
-                                <div class="input-group col-md-8">
+                                <div class="input-group col-md-8" style="float:left">
                                     @if (isset($idedit))
                                     <input type="text"  class="form-control input-sm" name="prefijo" value="{{$prefijo}}" style="width:60px"/>
+                                    <select name="tipo_fac" id="tipo_fac" class="form-control input-sm" style="width:105px; height:35px;">
+                                      @if($tipo_fac == 'PRODUCTO')
+                                      <option value="PRODUCTO" selected>PRODUCTO</option>
+                                      <option value="SERVICIO">SERVICIO</option>
+                                      @else
+                                      <option value="PRODUCTO">PRODUCTO</option>
+                                      <option value="SERVICIO" selected>SERVICIO</option>
+                                      @endif
+                                    </select>
                                     @else
-                                    <input type="text"  class="form-control input-sm" name="prefijo" value="" style="width:60px" />
+                                    <input type="text"  class="form-control col-md-3" name="prefijo" value="" style="width:60px" />
+                                    <select name="tipo_fac" id="tipo_fac" class="form-control input-sm" style="width:105px; height:35px;">
+                                      <option value="PRODUCTO">PRODUCTO</option>
+                                      <option value="SERVICIO"selected>SERVICIO</option>
+                                    </select>
                                     @endif
                                 </div>
                             </div>

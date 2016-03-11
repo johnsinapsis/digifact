@@ -25,7 +25,11 @@
      	</div>
     <section class="col-lg-7 connectedSortable" style="margin-left:20%;">
         <div class="box box-success">
+            @if(isset($liqui))
+            {!! Form::open(['class' => 'form-horizontal', 'role' => 'form','method' => 'POST','route' => 'resoliq']) !!}
+            @else
             {!! Form::open(['class' => 'form-horizontal', 'role' => 'form','method' => 'POST','route' => ['pdfview',$id], 'files' => true]) !!}
+            @endif
                 <div class="box-header">
                   <i class="fa fa-cogs"></i>
                   <h3 class="box-title">Seleccionar Resolución</h3>      

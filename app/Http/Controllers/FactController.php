@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\EntityController;
+use App\Http\Controllers\ResulController;
 
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
@@ -29,9 +30,36 @@ class FactController extends Controller
      *
      * @return Response
      */
-    public function index()
+    
+
+    public function selectResol()
+    { 
+        
+        $config = Configuracion::first();
+        $view = View('pdf.selectResol',[
+            'id'=> '1',
+            'logotipo' => $config->logotipo,
+            'liqui' => '1',
+            ]);
+        return $view;
+    }
+
+
+    public function index(Request $request)
     {
-        return View('liq.viewliq');
+        
+      $obj =  new ResulController();
+      $resol = $obj->resActiva($request->get('resol'));
+      $view = View('liq.viewliq',[
+        'idsel'     => $request->get('resol'),
+        'numressel' => $resol->num_resol,
+        'fecsel'    => $resol->fec_resol,
+        'inisel'    => $resol->ini_consec,
+        'finsel'    => $resol->fin_consec,
+        'actsel'    => $resol->act_consec,
+        'prefijo'    => $resol->prefijo,
+            ]);
+        return $view;
     }
 
     /**

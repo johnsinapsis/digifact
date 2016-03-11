@@ -8,10 +8,11 @@
               @include('partials/msg-ok')
       
               @if (isset($mensaje))
-              <div align="center"><button onclick="window.location='{{route('liq')}}'" class="btn btn-primary btn-flat">Nueva Factura</button></div> 
+              <div align="center"><button onclick="window.location='{{route('resoliq')}}'" class="btn btn-primary btn-flat">Nueva Factura</button></div> 
               @else
               {!! Form::open(['class' => 'form-horizontal', 'role' => 'form']) !!}
         
+
                 <div class="box-header">
                   <i class="fa fa-cogs"></i>
                   <h3 class="box-title">Facturación</h3>
@@ -20,7 +21,7 @@
                 <div class="box-body chat" id="chat-box" >
                   <!-- chat item -->
                   <div class="item">
-                    {!! Html::image('dist/img/logosore.png', "User image", array('class' => 'online')) !!}
+                    {!! Html::image('dist/img/logodigi.png', "User image", array('class' => 'online')) !!}
                     <p class="message">
                       @if(isset($info))
                       <span class="name">
@@ -35,7 +36,8 @@
                     <div class="attachment">
                       <div id="formresol">
                         
-                          <input id="token" type="hidden" name="_token" value="{{ csrf_token() }}">
+                          <input id="token" type="hidden" name="_token" value="{{ csrf_token() }}"/>
+                          <input id="resol" type="hidden" name="resol" value="{{ $idsel }}"/>
                            
                            <div class="form-group">
                                 <label class="col-md-4 control-label">Fecha:</label>

@@ -76,6 +76,19 @@ Route::group(['middleware' => ['auth','role:1']], function () {
 
 Route::group(['middleware' => ['auth','role:2']], function () {
 
+	Route::get('resoliq',[
+		'uses' => 'FactController@selectResol',
+		'as' => 'resoliq'
+	 
+	]);
+
+	Route::post('resoliq',[
+		'uses' => 'FactController@index',
+		'as' => 'resoliq'
+	 
+	]);
+
+
 	Route::get('liq',[
 		'uses' => 'FactController@index',
 		'as' => 'liq'

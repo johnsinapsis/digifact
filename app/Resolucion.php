@@ -18,7 +18,7 @@ class Resolucion extends Model
      *
      * @var array
      */
-    protected $fillable = ['num_resol', 'fec_resol', 'prefijo', 'ini_consec','fin_consec','nota_resol','stock_consec'];
+    protected $fillable = ['num_resol', 'fec_resol','tipo_fac' , 'prefijo', 'ini_consec','fin_consec','nota_resol','stock_consec'];
 
     public $timestamps = false;
 }

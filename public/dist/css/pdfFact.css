@@ -50,6 +50,17 @@ header {
   background: url(marcagua.png) no-repeat;
 }
 
+.marcborde{
+  width:100px;height:1100px; 
+  position: absolute;
+  margin-top: -40px;
+  margin-left: 650px;
+  filter:alpha(opacity=25);
+  -moz-opacity:.5;
+  opacity:.5;
+  /* background: url(membrete.png) no-repeat; */
+}
+
 .header{
     position:relative;
     width:400px;
@@ -149,7 +160,7 @@ color: black;
 
 .titfec{
   font-size: 10px;
-  background: #00913E; 
+  background: #3c8dbc; 
   border-radius: 5px;
   color: white;
 }
@@ -288,10 +299,23 @@ color: black;
 .detfact{
   position:relative;
     width:699px;
-    height:600px;
+    height:556px;
     border: 1px solid;
     border-radius: 6px;
-    border-color: #001028;
+    border-color: #001028; 
+    /* border-color: red; */
+    left: 1px;
+    top: -76px;
+}
+
+.detfact2{
+  position:relative;
+    width:699px;
+    height:599px;
+    border: 1px solid;
+    border-radius: 6px;
+    border-color: #001028; 
+    /* border-color: red; */
     left: 1px;
     top: -76px;
 }
@@ -299,40 +323,100 @@ color: black;
 .detalle{
 width: 700px;
 /* height: 50px; */
-border: 0px solid #001028; 
+border: 0px solid #001028;
 border-collapse: collapse;
 color: #001028;
 /* color: red; */
 }
 
 .detalle td {
+  /* border: 1px solid green; */
   border: 1px solid #001028;
   border-radius: 6px;
   padding: 6px;
 }
 
 .titdet{
- background: #A6E2A8; 
+ background: #81DAF5; 
 }
 
 .tittot{
-  position: relative;
+  position: absolute;
   width: 50px;
   height: 30px;
   left:480px;
-  top:-45px;
+  top:870px;
+  /* border: 1px solid; */ 
+}
+
+.titiva{
+  position: absolute;
+  width: 50px;
+  height: 30px;
+  left:480px;
+  top:835px;
+  /* border: 1px solid; */ 
+}
+
+.titsub{
+  position: absolute;
+  width: 50px;
+  height: 30px;
+  left:480px;
+  top:800px;
+  /* border: 1px solid; */ 
 }
 
 .valtot{
 position: absolute;
   width: 150px;
   height: 50px;
-  left:560px;
+  left:550px;
   top: 867px;
+
+}
+
+.valiva{
+position: absolute;
+  width: 150px;
+  height: 50px;
+  left:550px;
+  top: 830px;
+
+}
+
+.valsub{
+position: absolute;
+  width: 150px;
+  height: 50px;
+  left:550px;
+  top: 795px;
+
+}
+
+.divsub{
+  /* background: #3c8dbc; */ 
+  background: #FFFFFF; 
+  border: 1px solid; 
+  border-radius: 10px; 
+  border-color: #A79C9C; 
+  width:130px; 
+  height:30px; 
+}
+
+.diviva{
+  /* background: #3c8dbc; */ 
+  background: #FFFFFF; 
+  border: 1px solid; 
+  border-radius: 10px; 
+  border-color: #A79C9C; 
+  width:130px; 
+  height:30px; 
 }
 
 .divtot{
-  background: #A6E2A8; 
+  /* background: #3c8dbc; */ 
+  background: #81DAF5; 
   border: 1px solid; 
   border-radius: 10px; 
   border-color: #A79C9C; 
@@ -363,7 +447,7 @@ position: absolute;
   width: 350px;
   height: 50px;
   left:85px;
-  top: 780px;
+  top: 750px;
 }
 
 
@@ -423,7 +507,8 @@ position: absolute;
   height: 50px;
    left:450px;
    top: 964px;
-   color: #00913E;
+   color: #81DAF5;
+   font-weight: bold;
    vertical-align: top;
     border-top: 1px solid;
     border-color: blue;

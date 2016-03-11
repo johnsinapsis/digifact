@@ -16,6 +16,7 @@ class CreateResoluciones extends Migration
             $table->increments('id');
             $table->string('num_resol',20);
             $table->date('fec_resol');
+            $table->enum('tipo_fac',['servicio','producto']);
             $table->integer('ini_consec');
             $table->integer('fin_consec');
             $table->string('prefijo',5);

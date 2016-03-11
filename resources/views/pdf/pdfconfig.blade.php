@@ -8,6 +8,9 @@
   </head>
  <body>
       <div class="marcagua"></div>
+      <div>
+          {!! Html::image('imagenes/membrete.png', "User image", array('class' => 'marcborde')) !!}
+      </div>
      <div class="clearfix">
 	 
 	 {!! Html::image('imagenes/'.$logotipo, "User image", array('class' => 'logo')) !!}
@@ -90,7 +93,13 @@
             <div class="pag">Forma de Pago:</div>
             <div class="nompag"></div>
      	</div>
+        
+        @if($resolucion->resActiva($resol)->tipo_fac=='SERVICIO')
+        <div class="detfact2">
+        @else
         <div class="detfact">
+        @endif
+            @if($resolucion->resActiva($resol)->tipo_fac=='SERVICIO')
             <table class="detalle">
                 <tr>
                    <td width="50" align="center" class="titdet"><strong>CANTIDAD</strong></td> 
@@ -102,6 +111,33 @@
                     <td style="height:560px;"></td> <td ></td> <td></td> <td></td>
                 </tr>
             </table>
+            @else
+            <table class="detalle">
+                <tr>
+                   <td width="40" align="center" class="titdet" rowspan="2"><strong>COD</strong></td> 
+                   <td width="150" align="center" class="titdet" rowspan="2"><strong>PRODUCTO</strong></td>
+                   <td width="30" align="center" class="titdet" rowspan="2"><strong>CANT.</strong></td>  
+                   <td width="70" align="center" class="titdet" rowspan="2"><strong>V/R. UNIT.</strong></td> 
+                   <td width="80" align="center" class="titdet" colspan="2"><strong>IVA</strong></td>
+                   
+                   <td width="90" align="center" class="titdet" rowspan="2"><strong>VALOR TOTAL</strong></td>
+                </tr>
+                <tr>
+                    <!-- <td class="titdet"></td> -->
+                    <!-- <td class="titdet"></td> -->
+                    <!-- <td class="titdet"></td> -->
+                    <!-- <td class="titdet"></td> -->
+                    <td width="20" class="titdet" align="center">%</td>
+                    <td class="titdet" align="center">Valor</td>
+
+                    <!-- <td class="titdet"></td> -->
+                </tr>
+                <tr>
+                    <td style="height:490px;"></td> <td ></td> <td></td> <td></td><td></td><td></td>
+                    <td></td>
+                </tr>
+            </table>
+            @endif
             <table class="detaserv" border="0";>
                 {{--*/ $tot = 0 /*--}}
                 @if (isset($tel_ent))
@@ -131,7 +167,30 @@
                 @endif
             </table>
         </div>
+        @if($resolucion->resActiva($resol)->tipo_fac=='PRODUCTO')
+        <div class="titsub" ><h3 align="center"><strong>SUBTOTAL</strong></h3></div>
+        <div class="titiva" ><h3 align="center"><strong>IVA</strong></h3></div>
+        @endif
         <div class="tittot" style="page-break-after: avoid;"><h3 align="center"><strong>TOTAL</strong></h3></div>
+        @if($resolucion->resActiva($resol)->tipo_fac=='PRODUCTO')
+        <div class="valsub">
+            <table>
+                <tr>
+                    <td><h3>$</h3></td>
+                    <td><div class="divsub"><span class="valtotal">{{number_format($tot,2)}}</span></div></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="valiva">
+            <table>
+                <tr>
+                    <td><h3>$</h3></td>
+                    <td><div class="diviva"><span class="valtotal">{{number_format($tot,2)}}</span></div></td>
+                </tr>
+            </table>
+        </div>
+        @endif
         <div class="valtot">
             <table>
                 <tr>
@@ -174,12 +233,10 @@
              </tr>
          </table>
      </div>
-     <div class="sello">SALUD OCUPACIONAL REGIONAL S.A.S.</div>
+     <div class="sello">EQUIPOS DIGITALES HC S.A.S..</div>
     <footer>        
-     <strong>ESTA FACTURA DE VENTA SE ASIMILA EN SUS EFECTOS LEGALES A LA LETRA DE CAMBIO, SEGÚN ARTÍCULOS 772 A
-     774 DEL CÓDIGO DE COMERCIO.</strong> <br>
-     Así lo indica el inciso 3 del artículo 772 del código de comercio, modificado con el artículo 1 de la ley 1231, donde se lee: El emisor vendedor o prestador del servicio emitirá un original y dos copias de la factura. Para todos los efectos legales derivados del carácter de título valor de la factura, el original firmado por el emisor y obligado, será título valor negociable por endoso por el emisor y lo deberá conservar el emisor, vendedor o prestador del servicio. Una de las copias se le entregará al obligado y la otra quedará en poder del emisor, para sus registros contables.
-
+     <strong>Este documento se asimila para todos sus efectos legales a una letra de cambio (Art. 774 y sgtes., del C.de Cio.) y causará intereses por mora al maximo permitido por la ley.</strong> <br>
+     Aceptada esta factura de venta el Comprador declara haber recibido real y materialmente las mercancias y/o servicios facturados. Esta factura es un titulo valor y no se aceptan reclamos ni devoluciones después de 10 días de aceptada (ley 1231 de julio 17 de 2008). La firma de una persona distinta al comprador implica que está autorizada tácita y expresamente por el mismo para firmar en su nombre y el comprador asi lo acepta y se hace responsable de la deuda contraída por la presente.
     </footer>
  </body>
 
