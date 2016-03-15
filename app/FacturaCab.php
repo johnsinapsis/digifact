@@ -18,5 +18,5 @@ class FacturaCab extends Model
      *
      * @var array
      */
-    protected $fillable = ['numfac', 'fecfac', 'cod_ent','estfac','usufac','fecrad','motianu','obseanu'];
+    protected $fillable = ['numfac', 'id_resol','fecfac', 'cod_ent','estfac','usufac','fecrad','motianu','obseanu'];
 }

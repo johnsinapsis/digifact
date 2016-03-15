@@ -18,6 +18,6 @@ class Pago extends Model
      *
      * @var array
      */
-    protected $fillable = ['fecpago','numfac','valpago','tipopago','user'];
+    protected $fillable = ['fecpago','numfac', 'id_resol','valpago','tipopago','user'];
 
 }

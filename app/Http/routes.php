@@ -116,6 +116,17 @@ Route::group(['middleware' => ['auth','role:2']], function () {
 	 });
 
 
+	 Route::any('prod/autocomplete3', function(){  
+	 	// $term = "med";
+	 	$term = Input::get('term');
+	 	$data = DB::table('productos')->select('COD_PRO','NOM_PRO')->where('NOM_PRO','LIKE','%'.$term.'%')->get();
+	 	foreach ($data as $v) {
+	 		$result[] =  array('value' => $v->NOM_PRO, 'id' => $v->COD_PRO);
+	 	}
+	 	return Response::json($result);
+	 });
+
+
 	 Route::any('liq/autocomplete2/', function(){  
 	 	// $term = "med";
 	 	$term = Input::get('term');
@@ -360,12 +371,33 @@ Route::group(['middleware' => ['auth','role:13']], function () {
 		'uses' => 'PagoController@delete',
 		'as' => 'borrapago'
 		]);
+});
 
-	/*Route::post('borrapago/{id}',[
-		'uses' => 'PagoController@querypago',
-		'as' => 'borrapago'
-	 
-	]); */
+
+Route::group(['middleware' => ['auth','role:14']], function () {
+		
+	Route::get('producto', function(){
+		return View('config.viewproducto');
+	}); 
+
+		Route::post('update/{id}', [
+	 'uses' => 'ProductoController@update',
+	 'as' => 'upprod'
+	]);
+	Route::post('producto', [
+	 'uses' => 'ProductoController@store',
+	 'as' => 'producto'
+	]);
+
+	Route::post('buscaprod',  [
+		'uses' => 'ProductoController@show',
+		'as' => 'buscaprod'
+		]);
+
+	Route::get('editprod/{id}', [
+	 'uses' => 'ProductoController@edit',
+	 'as' => 'editprod'
+	]);
 });
 
 /*Route::controllers ([

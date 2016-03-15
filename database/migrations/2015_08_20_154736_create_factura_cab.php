@@ -14,7 +14,8 @@ class CreateFacturaCab extends Migration
     {
         Schema::create('factura_cab',function(Blueprint $table){
             $table->integer('numfac');
-            $table->primary('numfac');
+            $table->integer('id_resol')->unsigned()->nullable();
+            $table->primary(array('numfac', 'id_resol'));
             $table->date('fecfac');
             $table->string('cod_ent',20);
             $table->char('estfac',1);
@@ -26,6 +27,7 @@ class CreateFacturaCab extends Migration
             $table->integer('motianu')->unsigned()->nullable();
             $table->string('obseanu')->nullable();
             $table->timestamps();
+            $table->foreign('id_resol')->references('id')->on('resoluciones')->onDelete('cascade');
             $table->foreign('usufac')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('usurad')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('usuanu')->references('id')->on('users')->onDelete('cascade');

@@ -14,11 +14,12 @@ class CreateFacturaDet extends Migration
     {
         Schema::create('factura_det',function(Blueprint $table){ 
             $table->integer('numfac'); 
+            $table->integer('id_resol')->unsigned()->nullable();
             $table->integer('idserv');
-            $table->primary(array('numfac', 'idserv'));
+            $table->primary(array('numfac', 'id_resol','idserv'));
             $table->integer('cantserv');
             $table->decimal('valserv');
-            $table->foreign('numfac')->references('numfac')->on('factura_cab');
+            $table->foreign('numfac')->references(array('numfac', 'id_resol'))->on('factura_cab');
             $table->foreign('idserv')->references('COD_SER')->on('servicios');
             
             

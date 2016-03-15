@@ -6,13 +6,25 @@
               @include('partials/errors')
               @include('partials/success')
               @include('partials/msg-ok')
-           
-              {!! Form::open(['class' => 'form-horizontal', 'role' => 'form','method' => 'POST','route' => 'pago']) !!}
-        
+              @if(isset($producto_id))
+              {!! Form::open(['class' => 'form-horizontal', 'role' => 'form','method' => 'POST','route' => ['upprod',$producto_id]]) !!}
+              @else
+              {!! Form::open(['class' => 'form-horizontal', 'role' => 'form','method' => 'POST','route' => 'producto']) !!}
+              @endif
                 <div class="box-header">
                   <i class="fa fa-cogs"></i>
-                  <h3 class="box-title">Cartera</h3>
-                  
+                  <h3 class="box-title">Parámetros Básicos</h3>
+                  @if(isset($producto_id))
+                  {{--*/ $nomprod = $producto_nom /*--}}
+                  {{--*/ $codprod = $producto_id /*--}}
+                  {{--*/ $estprod = $producto_est /*--}}
+                  {{--*/ $abrprod = $producto_abr /*--}}
+                  @else
+                  {{--*/ $nomprod = "" /*--}}
+                  {{--*/ $codprod = "" /*--}}
+                  {{--*/ $estprod = 1 /*--}}
+                  {{--*/ $abrprod = "" /*--}}
+                  @endif
                 </div>
                 <div class="box-body chat" id="chat-box" >
                   <!-- chat item -->
@@ -20,7 +32,7 @@
                     {!! Html::image('dist/img/logodigi.png', "User image", array('class' => 'online')) !!}
                     <p class="message">
                       <span class="name">
-                        Registrar Pago de Facturas
+                        Registro de Productos
                       </span>
                       
                     </p>
@@ -30,47 +42,40 @@
                           <input id="token" type="hidden" name="_token" value="{{ csrf_token() }}">
                            
                            <div class="form-group">
-                                <label class="col-md-4 control-label">Número de Factura:</label>
+                                <label class="col-md-4 control-label">Nombre del Producto:</label>
                                 <div class="input-group input-group-sm">                                 
-                                    <input id="numfac" type="number" class="form-control input-sm" name="numfac"   value="" >
+                                    <input id="nomprod" type="text" class="form-control input-sm" name="nomprod"   value="{{$nomprod}}" >
                                 </div>
                                  
                             </div>
 
 
                            <div class="form-group">
-                                <label class="col-md-4 control-label">Fecha:</label>
+                                <label class="col-md-4 control-label">Estado:</label>
                                 <div class="input-group input-group-sm">                                 
-                                  <input id="fecha" type="date" class="form-control input-sm" name="fecha" min="2015-09-07" max="{{Carbon\Carbon::now()->format('Y-m-d')}}" value="{{Carbon\Carbon::now()->format('Y-m-d')}}"  >    
+                                  <select name="estado" id="estado" class="form-control">
+                                    @if($estprod)
+                                    <option value="0">Inactivo</option>
+                                    <option value="1" selected>Activo</option>
+                                    @else
+                                    <option value="0" selected>Inactivo</option>
+                                    <option value="1">Activo</option>
+                                    @endif
+                                  </select>   
                                 </div>
                                  
                             </div> 
 
                             <div class="form-group">
-                                <label class="col-md-4 control-label">Concepto:</label>
+                                <label class="col-md-4 control-label">Código:</label>
                                 <div class="input-group input-group-sm">  
-                                   @inject('concepto','App\Http\Controllers\ConcepController')                
-                                    <select name="concepto" id="concepto" class="form-control input-sm">
-                                      @foreach ($concepto->show() as $concepto)
-                                      @if($concepto->id==1)
-                                      <option value="{{$concepto->id}}" selected>{{$concepto->nomtipo}}</option>
-                                      @else
-                                      <option value="{{$concepto->id}}">{{$concepto->nomtipo}}</option>
-                                      @endif
-                                      @endforeach
-                                    </select>
+                                   <input id="abrprod" type="text" style="width:70px;" class="form-control input-sm" name="abrprod"   value="{{$abrprod}}" >               
+                                    
                                 </div>
                                  
                             </div>    
 
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">Valor del pago:</label>
-                                <div class="input-group input-group-sm">                                 
-                                    <input id="valpago" type="number" step="0.01" class="form-control input-sm" name="valpago" />
-                                </div>
-                                 
-                            </div>           
-                            
+                                     
                       </div>
                         
                     </div><!-- /.attachment -->
@@ -85,12 +90,12 @@
                {!! Form::close() !!}
               </div><!-- /.box (chat box) -->
 
-          @include('cartera/listpago')
+          @include('config/listproducto')
 
               </section>
           <!-- Fin del componente -->
-          @inject('resolucion','App\Http\Controllers\ResulController')
-          @include('resol/actresol')
+          {{--*/ $prod = 1 /*--}}
+          @include('config/browseprod')
 @endsection
 
 

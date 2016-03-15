@@ -98,6 +98,21 @@
             <li class="active treeview">
               <a href="#">
                 <i class="fa fa-files-o"></i>
+                <span>Generales</span>
+                
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="{{route('producto')}}"><i class="fa fa-circle-o"></i> Productos</a></li>
+                <!-- <li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
+                <li><a href="pages/layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
+                <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li> -->
+              </ul>
+            </li>
+
+
+            <li class="active treeview">
+              <a href="#">
+                <i class="fa fa-files-o"></i>
                 <span>Opciones de Cartera</span>
                 
               </a>
@@ -108,6 +123,7 @@
                 <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li> -->
               </ul>
             </li>
+
           </ul>
           @endif
        </aside>
@@ -156,6 +172,25 @@
             $("#entidad").prop('disabled', true);
             $("#servicio").removeAttr("readonly");
             $("#cantidad").removeAttr("readonly");
+
+          }
+        });
+      });
+
+       $(document).ready(function(){
+
+        $("#producto").bind({
+
+        });
+
+        $("#producto").autocomplete({
+          //dataType: 'json',
+          minLength:3,
+          autoFocus:true,
+          source : "{{URL('prod/autocomplete3')}}",
+          //source:disponible,
+          select : function(event, ui){
+            $("#idprod").val(ui.item.id);
 
           }
         });
