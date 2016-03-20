@@ -19,7 +19,9 @@ class EntityController extends Controller
      */
     public function index()
     {
-        //
+        $ent = Entidad::orderBy('NOM_ENT')
+                        ->paginate(5);
+        return $ent;
     }
 
     /**
@@ -40,7 +42,29 @@ class EntityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         $v = \Validator::make($request->all(), [
+             'noment' => 'required',
+             'nit' => 'required|numeric',
+             'dirent' => 'required',
+             'telent' => 'required'
+            ]);
+          if ($v->fails())
+        {
+            return redirect()->back()->withInput()->withErrors($v->errors());
+        }
+        else{
+            $ent = new Entidad([
+                    'COD_ENT' => $request->get('nit'),
+                    'NOM_ENT' => $request->get('noment'),
+                    'DIR_ENT' => $request->get('dirent'),
+                    'TEL_ENT' => $request->get('telent'),
+                    'CEL_ENT' => $request->get('celent'),
+                    'CON_ENT' => $request->get('conent'),
+                    'EST_ENT' => $request->get('estado'),
+                ]);
+            $ent->save();
+            return View('config.viewentidad')->with('mensaje','Cliente Registrado Satisfactoriamente');
+        }
     }
 
     /**
@@ -49,9 +73,22 @@ class EntityController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $id = $request->get('ident');
+        $ent = Entidad:: where('COD_ENT',$id)
+                            ->first();
+        //dd($request);
+        $view = View('config.viewentidad',[
+            'entidad_nit' => $ent->COD_ENT,
+            'entidad_nom' => $ent->NOM_ENT,
+            'entidad_est' => $ent->EST_ENT,
+            'entidad_dir' => $ent->DIR_ENT,
+            'entidad_tel' => $ent->TEL_ENT,
+            'entidad_cel' => $ent->CEL_ENT,
+            'entidad_con' => $ent->CON_ENT,
+            ]);
+        return $view;
     }
 
     /**
@@ -100,7 +137,19 @@ class EntityController extends Controller
      */
     public function edit($id)
     {
-        //
+        $ent = Entidad:: where('COD_ENT',$id)
+                            ->first();
+        //return View('config.viewproducto');
+        $view = View('config.viewentidad',[
+            'entidad_nit' => $ent->COD_ENT,
+            'entidad_nom' => $ent->NOM_ENT,
+            'entidad_est' => $ent->EST_ENT,
+            'entidad_dir' => $ent->DIR_ENT,
+            'entidad_tel' => $ent->TEL_ENT,
+            'entidad_cel' => $ent->CEL_ENT,
+            'entidad_con' => $ent->CON_ENT,
+            ]);
+        return $view;
     }
 
     /**
@@ -112,7 +161,29 @@ class EntityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $v = \Validator::make($request->all(), [
+             'noment' => 'required',
+             'nit' => 'required|numeric',
+             'dirent' => 'required',
+             'telent' => 'required'
+            ]);
+          if ($v->fails())
+        {
+            return redirect()->back()->withInput()->withErrors($v->errors());
+        }
+        else{
+            Entidad::where('COD_ENT', $id)
+                    ->update([
+                    'COD_ENT' => $request->get('nit'),
+                    'NOM_ENT' => $request->get('noment'),
+                    'DIR_ENT' => $request->get('dirent'),
+                    'TEL_ENT' => $request->get('telent'),
+                    'CEL_ENT' => $request->get('celent'),
+                    'CON_ENT' => $request->get('conent'),
+                    'EST_ENT' => $request->get('estado'),
+                        ]); 
+            return View('config.viewentidad')->with('mensaje','Cliente Actualizado Satisfactoriamente');
+        }
     }
 
     /**

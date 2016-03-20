@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Producto;
+use App\Servicio;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class ProductoController extends Controller
+class ServicioController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,10 +18,9 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        $prod = Producto::orderBy('NOM_PRO')
+        $serv = Servicio::orderBy('NOM_SER')
                         ->paginate(5);
-        $prod->setPath(route('producto'));
-        return $prod;
+        return $serv;
     }
 
     /**
@@ -44,21 +42,21 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
         $v = \Validator::make($request->all(), [
-             'nomprod' => 'required'
+             'nomserv' => 'required'
             ]);
           if ($v->fails())
         {
             return redirect()->back()->withInput()->withErrors($v->errors());
         }
         else{
-            $prod = new Producto([
-                    'NOM_PRO' => $request->get('nomprod'),
-                    'EST_PRO' => $request->get('estado'),
-                    'TIP_PRO' => '1',
-                    'ABBR' => $request->get('abrprod'),
+            $serv = new Servicio([
+                    'NOM_SER' => $request->get('nomserv'),
+                    'EST_SER' => $request->get('estado'),
+                    'TIP_SER' => '1',
+                    'ABBR' => $request->get('abrserv'),
                 ]);
-            $prod->save();
-            return View('config.viewproducto')->with('mensaje','Producto Registrado Satisfactoriamente');
+            $serv->save();
+            return View('config.viewservicio')->with('mensaje','Servicio Registrado Satisfactoriamente');
         }
     }
 
@@ -70,15 +68,15 @@ class ProductoController extends Controller
      */
     public function show(Request $request)
     {
-        $id = $request->get('idprod');
-        $config = Producto:: where('COD_PRO',$id)
+        $id = $request->get('idserv');
+        $config = Servicio:: where('COD_SER',$id)
                             ->first();
         //return View('config.viewproducto');
-        $view = View('config.viewproducto',[
-            'producto_id'=> $config->COD_PRO,
-            'producto_nom' => $config->NOM_PRO,
-            'producto_est' => $config->EST_PRO,
-            'producto_abr' => $config->ABBR,
+        $view = View('config.viewservicio',[
+            'servicio_id'=>   $config->COD_SER,
+            'servicio_nom' => $config->NOM_SER,
+            'servicio_est' => $config->EST_SER,
+            'servicio_abr' => $config->ABBR,
             ]);
         return $view;
     }
@@ -91,14 +89,14 @@ class ProductoController extends Controller
      */
     public function edit($id)
     {
-        $prod = Producto:: where('COD_PRO',$id)
+         $serv = Servicio:: where('COD_SER',$id)
                             ->first();
         //return View('config.viewproducto');
-        $view = View('config.viewproducto',[
-            'producto_id'=> $prod->COD_PRO,
-            'producto_nom' => $prod->NOM_PRO,
-            'producto_est' => $prod->EST_PRO,
-            'producto_abr' => $prod->ABBR,
+        $view = View('config.viewservicio',[
+            'servicio_id'  => $serv->COD_SER,
+            'servicio_nom' => $serv->NOM_SER,
+            'servicio_est' => $serv->EST_SER,
+            'servicio_abr' => $serv->ABBR,
             ]);
         return $view;
     }
@@ -113,25 +111,21 @@ class ProductoController extends Controller
     public function update(Request $request, $id)
     {
         $v = \Validator::make($request->all(), [
-             'nomprod' => 'required'
+             'nomserv' => 'required'
             ]);
           if ($v->fails())
         {
             return redirect()->back()->withInput()->withErrors($v->errors());
         }
         else{
-            Producto::where('COD_PRO', $id)
+            Servicio::where('COD_SER', $id)
                     ->update([
-                    'NOM_PRO' => $request->get('nomprod'),
-                    'EST_PRO' => $request->get('estado'),
-                    'TIP_PRO' => '1',
-                    'ABBR' => $request->get('abrprod'),
+                    'NOM_SER' => $request->get('nomserv'),
+                    'EST_SER' => $request->get('estado'),
+                    'TIP_SER' => '1',
+                    'ABBR' => $request->get('abrserv'),
                         ]); 
-
-            return View('config.viewproducto')->with('mensaje','Producto Actualizado Satisfactoriamente');
-             /*return redirect()->route('producto',['mensaje'=>'Producto Actualizado Satisfactoriamente']);*/
-            /*return Redirect::route('producto', array('mensaje' => 'Producto Actualizado Satisfactoriamente'));*/ 
-            //return Redirect::route('producto')->with('mensaje','Producto Actualizado Satisfactoriamente');
+            return View('config.viewservicio')->with('mensaje','Servicio Actualizado Satisfactoriamente');
         }
     }
 

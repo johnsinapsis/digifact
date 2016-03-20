@@ -103,9 +103,10 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="{{route('producto')}}"><i class="fa fa-circle-o"></i> Productos</a></li>
-                <!-- <li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
-                <li><a href="pages/layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
-                <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li> -->
+                <li><a href="{{route('servicio')}}"><i class="fa fa-circle-o"></i> Servicios</a></li>
+                <li><a href="{{route('entidad')}}"><i class="fa fa-circle-o"></i> Clientes</a></li>
+                <!-- <li><a href="{{route('entidad')}}"><i class="fa fa-circle-o"></i> Precios</a></li>
+                <li><a href="{{route('entidad')}}"><i class="fa fa-circle-o"></i> Tarifas</a></li> -->
               </ul>
             </li>
 
@@ -191,6 +192,25 @@
           //source:disponible,
           select : function(event, ui){
             $("#idprod").val(ui.item.id);
+
+          }
+        });
+      });
+
+       $(document).ready(function(){
+
+        $("#serviciop").bind({
+
+        });
+
+        $("#serviciop").autocomplete({
+          //dataType: 'json',
+          minLength:3,
+          autoFocus:true,
+          source : "{{URL('serv/autocomplete4')}}",
+          //source:disponible,
+          select : function(event, ui){
+            $("#idserv").val(ui.item.id);
 
           }
         });

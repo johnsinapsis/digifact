@@ -126,6 +126,16 @@ Route::group(['middleware' => ['auth','role:2']], function () {
 	 	return Response::json($result);
 	 });
 
+	 Route::any('serv/autocomplete4', function(){  
+	 	// $term = "med";
+	 	$term = Input::get('term');
+	 	$data = DB::table('servicios')->select('COD_SER','NOM_SER')->where('NOM_SER','LIKE','%'.$term.'%')->get();
+	 	foreach ($data as $v) {
+	 		$result[] =  array('value' => $v->NOM_SER, 'id' => $v->COD_SER);
+	 	}
+	 	return Response::json($result);
+	 });
+
 
 	 Route::any('liq/autocomplete2/', function(){  
 	 	// $term = "med";
@@ -380,10 +390,11 @@ Route::group(['middleware' => ['auth','role:14']], function () {
 		return View('config.viewproducto');
 	}); 
 
-		Route::post('update/{id}', [
+	Route::post('update/{id}', [
 	 'uses' => 'ProductoController@update',
 	 'as' => 'upprod'
 	]);
+		
 	Route::post('producto', [
 	 'uses' => 'ProductoController@store',
 	 'as' => 'producto'
@@ -399,6 +410,69 @@ Route::group(['middleware' => ['auth','role:14']], function () {
 	 'as' => 'editprod'
 	]);
 });
+
+
+Route::group(['middleware' => ['auth','role:15']], function () {
+		
+	Route::get('servicio', function(){
+		return View('config.viewservicio');
+	}); 
+
+		Route::post('upserv/{id}', [
+	 'uses' => 'ServicioController@update',
+	 'as' => 'upserv'
+	]);
+
+	Route::post('servicio', [
+	 'uses' => 'ServicioController@store',
+	 'as' => 'servicio'
+	]);
+
+	Route::post('buscaserv',  [
+		'uses' => 'ServicioController@show',
+		'as' => 'buscaserv'
+		]);
+
+	Route::get('editserv/{id}', [
+	 'uses' => 'ServicioController@edit',
+	 'as' => 'editserv'
+	]);
+});
+
+
+Route::group(['middleware' => ['auth','role:16']], function () {
+		
+	Route::get('entidad', function(){
+		return View('config.viewentidad');
+	}); 
+
+		Route::post('upent/{id}', [
+	 'uses' => 'EntityController@update',
+	 'as' => 'upent'
+	]);
+
+	Route::post('entidad', [
+	 'uses' => 'EntityController@store',
+	 'as' => 'entidad'
+	]);
+
+	Route::post('buscaent',  [
+		'uses' => 'EntityController@show',
+		'as' => 'buscaent'
+		]);
+
+	Route::get('editent/{id}', [
+	 'uses' => 'EntityController@edit',
+	 'as' => 'editent'
+	]);
+
+
+});
+
+
+/*Route::group(['middleware' => ['auth','role:17']], function () {
+
+	});*/
 
 /*Route::controllers ([
 		'ver' => 'ResulController@show',

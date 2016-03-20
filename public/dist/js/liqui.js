@@ -191,21 +191,7 @@ $("#liqui").click(function(){
 // }
 
 
-// $.ajax({
-//        url:route,
-//      //url:"{{URL('liq/autocomplete2')}}"
-//        headers:{'X-CSRF-TOKEN':token},
-//        type: "POST",
-//        dataType: "json",
-//        data:{fact:fac,fecha:fec,entidad:ent,cond:cond,fecfac:fecfac},
-//        success: function(data) {
-//                 //var pdf = "pdfprev/"+ident+"/"+fecha;
-//                 //var url = "{{"+pdf+"}}";
-//                 //window.open(pdf,'_blank');
-//                 // var prueba = JSON.parse(data);
-//                 // alert(data[0].numfac);
-//              }
-//     });
+
 
 
 
