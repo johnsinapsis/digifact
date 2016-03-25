@@ -105,8 +105,8 @@
                 <li><a href="{{route('producto')}}"><i class="fa fa-circle-o"></i> Productos</a></li>
                 <li><a href="{{route('servicio')}}"><i class="fa fa-circle-o"></i> Servicios</a></li>
                 <li><a href="{{route('entidad')}}"><i class="fa fa-circle-o"></i> Clientes</a></li>
-                <!-- <li><a href="{{route('entidad')}}"><i class="fa fa-circle-o"></i> Precios</a></li>
-                <li><a href="{{route('entidad')}}"><i class="fa fa-circle-o"></i> Tarifas</a></li> -->
+                <li><a href="{{route('precios')}}"><i class="fa fa-circle-o"></i> Precios</a></li>
+                <li><a href="{{route('tarifas')}}"><i class="fa fa-circle-o"></i> Tarifas</a></li>
               </ul>
             </li>
 
@@ -215,6 +215,175 @@
           }
         });
       });
+
+       $(document).ready(function(){
+
+        $("#entidadb").bind({
+
+        });
+
+        $("#entidadb").autocomplete({
+          //dataType: 'json',
+          minLength:3,
+          autoFocus:true,
+          source : "{{URL('price/autocomplete5')}}",
+          //source:disponible,
+          select : function(event, ui){
+            $("#ident").val(ui.item.id);
+            $("#labpre").show();
+            $("#labval").show();
+            $("#labiva").show();
+            $("#prodpre").show();
+            $("#valpro").show();
+            $("#valiva").show();
+            $("#labiva2").show();
+
+          }
+        });
+      });
+
+       $(document).ready(function(){
+
+        $("#entidadf").bind({
+
+        });
+
+        $("#entidadf").autocomplete({
+          //dataType: 'json',
+          minLength:3,
+          autoFocus:true,
+          source : "{{URL('price/autocomplete5')}}",
+          //source:disponible,
+          select : function(event, ui){
+            $("#ident").val(ui.item.id);
+            $("#labtar").show();
+            $("#labval").show();
+            $("#sertar").show();
+            $("#valser").show();     
+
+          }
+        });
+      });
+
+       $(document).ready(function(){
+
+        $("#entidadc").bind({
+
+        });
+
+        $("#entidadc").autocomplete({
+          //dataType: 'json',
+          minLength:3,
+          autoFocus:true,
+          source : "{{URL('price/autocomplete5')}}",
+          //source:disponible,
+          select : function(event, ui){
+            $("#ident2").val(ui.item.id);
+          
+          }
+        });
+      });
+
+       $(document).ready(function(){
+
+        $("#entidadd").bind({
+
+        });
+
+        $("#entidadd").autocomplete({
+          //dataType: 'json',
+          minLength:3,
+          autoFocus:true,
+          source : "{{URL('price/autocomplete5')}}",
+          //source:disponible,
+          select : function(event, ui){
+            $("#ident3").val(ui.item.id);
+          
+          }
+        });
+      });
+
+       $(document).ready(function(){
+
+        $("#entidade").bind({
+
+        });
+
+        $("#entidade").autocomplete({
+          //dataType: 'json',
+          minLength:3,
+          autoFocus:true,
+          source : "{{URL('price/autocomplete5')}}",
+          //source:disponible,
+          select : function(event, ui){
+            $("#ident4").val(ui.item.id);
+          
+          }
+        });
+      });
+
+       $(document).ready(function(){
+
+        var y = $("#ident").val();
+        var p = "price/autocomplete6?ident="+y;
+        //var token = $("#token").val();
+        $("#prodpre").autocomplete({
+          //dataType: 'json',
+          minLength:3,
+          autoFocus:true,
+
+          source: function(request,response){
+            $.ajax({
+              url:"{{URL('price/autocomplete6')}}",
+              //headers:{'X-CSRF-TOKEN':token},
+              dataType: "json",
+              data: {
+                term: request.term,
+                ident: $("#ident").val(),
+              },
+              success: function(data) {
+               response(data);
+             }
+            });
+          },
+          select : function(event, ui){
+            $("#idprod").val(ui.item.id);
+           
+          }
+        });
+      });
+
+       $(document).ready(function(){
+
+        var y = $("#ident").val();
+        var p = "tarifa/autocomplete6?ident="+y;
+        //var token = $("#token").val();
+        $("#sertar").autocomplete({
+          //dataType: 'json',
+          minLength:3,
+          autoFocus:true,
+
+          source: function(request,response){
+            $.ajax({
+              url:"{{URL('tarifa/autocomplete6')}}",
+              //headers:{'X-CSRF-TOKEN':token},
+              dataType: "json",
+              data: {
+                term: request.term,
+                ident: $("#ident").val(),
+              },
+              success: function(data) {
+               response(data);
+             }
+            });
+          },
+          select : function(event, ui){
+            $("#idprod").val(ui.item.id);
+           
+          }
+        });
+      });
+
 
         $(document).ready(function(){
 

@@ -115,6 +115,17 @@ Route::group(['middleware' => ['auth','role:2']], function () {
 	 	return Response::json($result);
 	 });
 
+	 Route::any('price/autocomplete5', function(){  
+	 	// $term = "med";
+	 	$term = Input::get('term');
+	 	$data = DB::table('entidades')->select('COD_ENT','NOM_ENT')->where('NOM_ENT','LIKE',$term.'%')->get();
+	 	//$result[0] = array('value' => 'Medicadiz', 'id' => '2');
+	 	foreach ($data as $v) {
+	 		$result[] =  array('value' => $v->NOM_ENT, 'id' => $v->COD_ENT);
+	 	}
+	 	return Response::json($result);
+	 });
+
 
 	 Route::any('prod/autocomplete3', function(){  
 	 	// $term = "med";
@@ -149,6 +160,30 @@ Route::group(['middleware' => ['auth','role:2']], function () {
 	 	//$result[0] = array('value' => 'consulta salud', 'id' => $ident);
 	 	foreach ($data as $v) {
 	 		$result[] =  array('value' => $v->NOM_SER, 'id' => $v->COD_SER, 'precio' => $v->VAL_SER);
+	 	}
+	 	return Response::json($result);
+	 });
+
+	 Route::any('price/autocomplete6/', function(){  
+	 	// $term = "med";
+	 	$term = Input::get('term');
+	 	$ident = Input::get('ident');
+	 	$data = DB::select( DB::raw("SELECT COD_PRO, NOM_PRO FROM productos where EST_PRO = 1 and COD_PRO not in (select COD_PRO from precios where COD_ENT = $ident ) and NOM_PRO like '$term%'") );
+	 	//$result[0] = array('value' => 'consulta salud', 'id' => $ident);
+	 	foreach ($data as $v) {
+	 		$result[] =  array('value' => $v->NOM_PRO, 'id' => $v->COD_PRO);
+	 	}
+	 	return Response::json($result);
+	 });
+
+	 Route::any('tarifa/autocomplete6/', function(){  
+	 	// $term = "med";
+	 	$term = Input::get('term');
+	 	$ident = Input::get('ident');
+	 	$data = DB::select( DB::raw("SELECT COD_SER, NOM_SER FROM servicios where EST_SER = 1 and COD_SER not in (select COD_SER from tarifas where COD_ENT = $ident ) and NOM_SER like '$term%'") );
+	 	//$result[0] = array('value' => 'consulta salud', 'id' => $ident);
+	 	foreach ($data as $v) {
+	 		$result[] =  array('value' => $v->NOM_SER, 'id' => $v->COD_SER);
 	 	}
 	 	return Response::json($result);
 	 });
@@ -470,19 +505,66 @@ Route::group(['middleware' => ['auth','role:16']], function () {
 });
 
 
-/*Route::group(['middleware' => ['auth','role:17']], function () {
+Route::group(['middleware' => ['auth','role:17']], function () {
 
-	});*/
+		Route::get('precios', function(){
+		return View('config.viewprecio');
+		}); 
 
-/*Route::controllers ([
-		'ver' => 'ResulController@show',
-	]);*/
+		Route::post('precios', [
+	 	'uses' => 'PrecioController@store',
+	 	'as' => 'precios'
+		]);
 
-/*Route::get('/',function()
-{
- $user = DB::table('users')->where('name','sinapsis')->first();
- return $user->email;
-});*/
+		Route::post('copiaprec',  [
+		'uses' => 'PrecioController@copiaprec',
+		'as' => 'copiaprec'
+		]);
+
+		Route::post('buscapre',  [
+		'uses' => 'PrecioController@show',
+		'as' => 'buscapre'
+		]);
+
+		Route::any('eraseprec','PrecioController@delete');
+
+
+		Route::get('prec_postdelete','PrecioController@link_postdelete');
+
+
+	});
+
+
+Route::group(['middleware' => ['auth','role:18']], function () {
+
+		Route::get('tarifas', function(){
+		return View('config.viewtarifa');
+		}); 
+
+		Route::post('tarifas', [
+	 	'uses' => 'TarifaController@store',
+	 	'as' => 'tarifas'
+		]);
+
+		Route::post('copiatar',  [
+		'uses' => 'TarifaController@copiatar',
+		'as' => 'copiatar'
+		]);
+
+		Route::post('buscatar',  [
+		'uses' => 'TarifaController@show',
+		'as' => 'buscatar'
+		]);
+
+		Route::any('erasetar','TarifaController@delete');
+
+
+		Route::get('tar_postdelete','TarifaController@link_postdelete');
+
+
+	});
+
+
 
 // Authentication routes...
 Route::get('login', [

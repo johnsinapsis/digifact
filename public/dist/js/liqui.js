@@ -153,49 +153,39 @@ $("#liqui").click(function(){
 });
 
 
-// $("#buscaFact").click(function(){
-// var numfac = $("#numfac").val();
-// var fecini = $("#fecini").val();
-// var fecfin = $("#fecfin").val();
-// var ident = $("#entidad").val();
-// var route = "imp/query";
-// var token = $("#token").val();
-// var cond = "";
-// var fac = 0;
-// var fec=0;
-// var ent=0;
-// var fecfac ="";
-// if(numfac){
-//   cond = "'numfac','"+numfac+"'";
-//   fac = 1;
-// }
-// if(fecini)
-// {
-//   if(numfac)
-//     cond = cond+"@";
-//   if(fecfin)
-//    { 
-//     fec=2;
-//     //cond = cond+"'fecfac',array('"+fecini+"','"+fecfin+"')";
-//     fecfac = fecini+"@"+fecfin;
-//    }
-//   else{
-//     fec=1;
-//     cond = cond+"'fecfac','"+fecini+"'";
-//   }
-// }
-// if(ident){
-//   ent=1;
-//   cond = cond+"@";
-//   cond = cond+"'cod_ent','"+ident+"'";
-// }
+function delete_precio(ident,idprod){
+var token = $("#token").val();
+var route = 'eraseprec';
+  if (confirm('¿Estas seguro de eliminar este precio?')){ 
+    $.ajax({
+      url: route,
+      headers:{'X-CSRF-TOKEN':token},
+      type: "POST",
+      dataType: "json",
+      data:{codent:ident,codpro:idprod},
+      success: function(data) {
+      window.location.href = "prec_postdelete";
+      }
+     });
+  }
+}
 
-
-
-
-
-
-// });
+function delete_tarifa(ident,idser){
+var token = $("#token").val();
+var route = 'erasetar';
+  if (confirm('¿Estas seguro de eliminar esta tarifa?')){ 
+    $.ajax({
+      url: route,
+      headers:{'X-CSRF-TOKEN':token},
+      type: "POST",
+      dataType: "json",
+      data:{codent:ident,codser:idser},
+      success: function(data) {
+      window.location.href = "tar_postdelete";
+      }
+     });
+  }
+}
 
 
 
