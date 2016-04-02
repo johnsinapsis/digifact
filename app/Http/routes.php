@@ -164,6 +164,22 @@ Route::group(['middleware' => ['auth','role:2']], function () {
 	 	return Response::json($result);
 	 });
 
+	 Route::any('liq/autocomplete3/', function(){  
+	 	// $term = "med";
+	 	$term = Input::get('term');
+	 	$ident = Input::get('ident');
+	 	$data = DB::table('productos')
+	 			 ->join('precios', 'productos.COD_PRO', '=', 'precios.COD_PRO')
+	 	         ->select('productos.COD_PRO','NOM_PRO','VAL_PRO','VAL_IVA')
+	 	         ->where('NOM_PRO','LIKE',$term.'%')
+	 	         ->where('COD_ENT', '=', $ident)->get();
+	 	//$result[0] = array('value' => 'consulta salud', 'id' => $ident);
+	 	foreach ($data as $v) {
+	 		$result[] =  array('value' => $v->NOM_PRO, 'id' => $v->COD_PRO, 'precio' => $v->VAL_PRO, 'iva' => $v->VAL_IVA);
+	 	}
+	 	return Response::json($result);
+	 });
+
 	 Route::any('price/autocomplete6/', function(){  
 	 	// $term = "med";
 	 	$term = Input::get('term');
@@ -190,7 +206,7 @@ Route::group(['middleware' => ['auth','role:2']], function () {
 
 	 Route::any('liq/prev','FactController@preview');
 
-	 Route::get('pdfprev/{id}/{fecha}', [
+	 Route::get('pdfprev/{id}/{fecha}/{resol}', [
 		'uses' => 'FactController@show',
 		'as' => 'pdfprev'
 		]);
@@ -201,7 +217,7 @@ Route::group(['middleware' => ['auth','role:2']], function () {
 	 	return View('liq.viewliq')->with('mensaje','Factura '.$numfac.' liquidada Satisfactoriamente');
 	 });
 
-	 Route::get('pdffact/{numfac}', [
+	 Route::get('pdffact/{numfac}/{resol}', [
 		'uses' => 'FactController@pdfshow',
 		'as' => 'pdffact'
 		]);

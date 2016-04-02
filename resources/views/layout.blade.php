@@ -172,6 +172,7 @@
             $("#fecha").prop('disabled', true);
             $("#entidad").prop('disabled', true);
             $("#servicio").removeAttr("readonly");
+            $("#productob").removeAttr("readonly");
             $("#cantidad").removeAttr("readonly");
 
           }
@@ -378,7 +379,7 @@
             });
           },
           select : function(event, ui){
-            $("#idprod").val(ui.item.id);
+            $("#idser").val(ui.item.id);
            
           }
         });
@@ -418,6 +419,41 @@
         });
       });
 
+$(document).ready(function(){
+
+        var y = $("#ident").val();
+        var p = "liq/autocomplete3?ident="+y;
+        //var token = $("#token").val();
+        $("#productob").autocomplete({
+          //dataType: 'json',
+          minLength:3,
+          autoFocus:true,
+          //source : "{{URL('liq/autocomplete2')}}",
+          //source: "{{url('liq/autocomplete2/}}"+ $("#ident").val()+"{{')}}",
+          source: function(request,response){
+            $.ajax({
+              url:"{{URL('liq/autocomplete3')}}",
+              //headers:{'X-CSRF-TOKEN':token},
+              dataType: "json",
+              data: {
+                term: request.term,
+                ident: $("#ident").val(),
+              },
+              success: function(data) {
+               response(data);
+             }
+            });
+          },
+          select : function(event, ui){
+            $("#idprod").val(ui.item.id);
+            $("#valuni").val(ui.item.precio);
+            $("#valiva").val(ui.item.iva);
+            $("#agrefila").attr('disabled', false);
+          }
+        });
+      });
+
+
 $("#previa").click(function(){
  var ident = $("#ident").val();
  var idserv = new Array();
@@ -426,6 +462,7 @@ $("#previa").click(function(){
  var valuni = new Array();
  var token = $("#token").val();
  var fecha = $("#fecha").val();
+ var resol = $("#resol").val();
  var fullDate = new Date();
  var startDate = new Date($('#fecha').val());
  if(startDate>fullDate){
@@ -452,7 +489,60 @@ $("#previa").click(function(){
        dataType: "json",
        data:{ident:ident,fecha:fecha,idserv:idserv,cantidad:cant,valuni:valuni},
        success: function(data) {
-                var pdf = "pdfprev/"+ident+"/"+fecha;
+                var pdf = "pdfprev/"+ident+"/"+fecha+"/"+resol;
+                //var url = "{{"+pdf+"}}";
+                window.open(pdf,'_blank');
+             }
+    });
+  } //fin else cuando la fecha está correcta
+});
+
+$("#previa2").click(function(){
+ var ident = $("#ident").val();
+ var idprod = new Array();
+ var cant = new Array();
+ var route = "{{URL('liq/prev')}}";
+ var valuni = new Array();
+ var valiva = new Array();
+ var token = $("#token").val();
+ var fecha = $("#fecha").val();
+ var resol = $("#resol").val();
+ var fullDate = new Date();
+ var startDate = new Date($('#fecha').val());
+ var prod = 1;
+ if(startDate>fullDate){
+  alert("la fecha no puede ser mayor a la actual");
+ }
+ else
+ {
+  $('#previa2').hide();
+  $('#modif').show(3000);
+  $('#liqui2').show(3000); 
+ $('#detprod').DataTable().column(5).visible(true);
+ $('#detprod').DataTable().column(6).visible(true);
+ $('#detprod').DataTable().column(7).visible(true);
+ $("#detprod tbody tr").each(function (index){
+    idprod[index] = $(this).attr("data-id").substring(1);
+     cant[index]    = $(this).find("td").eq(1).html();
+     valuni[index]  = $(this).find("td").eq(5).html();
+     valiva[index]  = $(this).find("td").eq(7).html();
+     //alert($(this).find("td").eq(7).html());
+     //alert(index);
+     
+    });
+ $('#detprod').DataTable().column(5).visible(false);
+ $('#detprod').DataTable().column(6).visible(false);
+ $('#detprod').DataTable().column(7).visible(false);
+    //alert(valiva);
+    $.ajax({
+       url:"{{URL('liq/prev')}}",
+     //url:"{{URL('liq/autocomplete2')}}"
+       headers:{'X-CSRF-TOKEN':token},
+       type: "POST",
+       dataType: "json",
+       data:{ident:ident,fecha:fecha,idprod:idprod,cantidad:cant,valuni:valuni,valiva:valiva,resol:resol},
+       success: function(data) {
+                var pdf = "pdfprev/"+ident+"/"+fecha+"/"+resol;
                 //var url = "{{"+pdf+"}}";
                 window.open(pdf,'_blank');
              }

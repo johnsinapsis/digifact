@@ -7,7 +7,9 @@ use Auth;
 
 use App\FacturaCab;
 use App\FacturaDet;
+use App\FacturaDet2;
 use App\TmpFact;
+use App\TmpFact2;
 use App\Configuracion;
 use App\Entidad;
 use App\Resolucion;
@@ -53,6 +55,7 @@ class FactController extends Controller
       $view = View('liq.viewliq',[
         'idsel'     => $request->get('resol'),
         'numressel' => $resol->num_resol,
+        'tipo_fac' => $resol->tipo_fac,
         'fecsel'    => $resol->fec_resol,
         'inisel'    => $resol->ini_consec,
         'finsel'    => $resol->fin_consec,
@@ -251,27 +254,47 @@ class FactController extends Controller
             $idserv = $request->get('idserv');
             $cant = $request->get('cantidad');
             $valuni = $request->get('valuni');
+            $resol = $request->get('resol');
+            
             $i=0;
-             TmpFact::where('id', '>','0')
+             
+            if($resol){
+                $idprod = $request->get('idprod');
+                $valiva = $request->get('valiva');
+
+                TmpFact2::where('id', '>','0')
                       ->delete();
 
-            while($i < count($idserv))
-            {
-             $tmp = new TmpFact([
-                'idserv'  => $idserv[$i],
-                'cantserv'=> $cant[$i],
-                'valserv' => $valuni[$i],
-                ]);
-             $i++;
-             $tmp->save();
-            }
+                while($i < count($idprod))
+                {
+                  $tmp = new TmpFact2([
+                     'idprod'  => $idprod[$i],
+                     'cantprod'=> $cant[$i],
+                     'valprod' => $valuni[$i],
+                     'valiva' => $valiva[$i],
+                     ]);
+                  $i++;
+                  $tmp->save();
+                 }
+               }
+               else{
+                   TmpFact::where('id', '>','0')
+                      ->delete();
+
+                while($i < count($idserv))
+                {
+                  $tmp = new TmpFact([
+                     'idserv'  => $idserv[$i],
+                     'cantserv'=> $cant[$i],
+                     'valserv' => $valuni[$i],
+                     ]);
+                  $i++;
+                  $tmp->save();
+                 }
+
+               }
             
-            //return View('config.viewconfig');
-           /*return response()->json([
-             "mensaje" =>  $request->all() 
-            ]);*/
-            //$result[0] = array('value' => 'consulta salud', 'id' => '18');
-            //return response()->json($result);
+           
           return response()->json(["mensaje" => "listo"]);
         }
     }
@@ -482,15 +505,19 @@ class FactController extends Controller
             $idserv = $request->get('idserv');
             $cant = $request->get('cantidad');
             $valuni = $request->get('valuni');
+            $resol = $request->get('resol');
             
-            $resol = Resolucion:: select('act_consec') 
-                               ->where('estado',true)
+            $res = Resolucion:: select('act_consec','tipo_fac') 
+                               ->where('id',$resol)
                                ->first();
-            $numfac = $resol->act_consec;
-            //$result = array('numfac' => $numfac, 'fecha' => $fecha);
-            DB::transaction(function () use ($numfac, $fecha,$ident,$idserv,$cant,$valuni) {
+            $numfac = $res->act_consec;
+            $tipo_fac = $res->tipo_fac;
+            if($tipo_fac=="SERVICIO")
+            {
+            DB::transaction(function () use ($numfac, $fecha,$ident,$idserv,$cant,$valuni,$resol) {
             $cab = new FacturaCab([
                     'numfac' => $numfac,
+                    'id_resol' => $resol,
                     'fecfac' => $fecha,
                     'cod_ent'=> $ident,
                     'estfac' => '1',
@@ -502,6 +529,7 @@ class FactController extends Controller
             {
                 $det = new FacturaDet([
                 'numfac'  => $numfac,
+                'id_resol' => $resol,
                 'idserv'  => $idserv[$i],
                 'cantserv'=> $cant[$i],
                 'valserv' => $valuni[$i],
@@ -510,11 +538,45 @@ class FactController extends Controller
                 $det->save();
             }
 
-            Resolucion::where('estado', true)
+            Resolucion::where('id', $resol)
                     ->update(['act_consec' => $numfac+1]);
                
                 });
+            }
+            else
+            {
+            $idprod = $request->get('idprod');
+            $valiva = $request->get('valiva');
+            //dd($idprod);
+            DB::transaction(function () use ($numfac, $fecha,$ident,$idprod,$cant,$valuni,$resol,$valiva) {
+                    $cab = new FacturaCab([
+                    'numfac' => $numfac,
+                    'id_resol' => $resol,
+                    'fecfac' => $fecha,
+                    'cod_ent'=> $ident,
+                    'estfac' => '1',
+                    'usufac' => Auth::user()->id
+                    ]);
+            $cab->save();
+            $i=0;
 
+             while($i < count($idprod))
+            {
+                $det = new FacturaDet2([
+                'numfac'  => $numfac,
+                'id_resol' => $resol,
+                'idprod'  => $idprod[$i],
+                'cantprod'=> $cant[$i],
+                'valprod' => $valuni[$i],
+                'valiva' => $valiva[$i],
+                ]);
+                $i++;
+                $det->save();
+            }
+          Resolucion::where('id', $resol)
+                    ->update(['act_consec' => $numfac+1]);
+                 });
+            }
             return response()->json(["numfac" => $numfac]);
         }
         
@@ -526,7 +588,7 @@ class FactController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function show($id,$fecha)
+    public function show($id,$fecha,$resol)
     {
         $config = Configuracion:: where('estado','1')
                             ->first();
@@ -557,11 +619,13 @@ class FactController extends Controller
         'nit_ent'     => $id,
         'dv'          => $dv,
         'dir_ent'     => $entidad->DIR_ENT,
-        'tel_ent'     => $entidad->TEL_ENT
+        'tel_ent'     => $entidad->TEL_ENT,
+        'resol'       => $resol
         ]);
+         //return $view;
          $pdf = \App::make('dompdf.wrapper');
-      $pdf->loadHTML($view);
-      return $pdf->stream('previa.pdf');
+         $pdf->loadHTML($view);
+       return $pdf->stream('previa.pdf');
     }
 
 
@@ -571,12 +635,13 @@ class FactController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function pdfshow($numfac)
+    public function pdfshow($numfac,$resol)
     {
         
         //consultar id y fecha    
         $factura = FacturaCab::select('cod_ent','fecfac','estfac')
                              ->where('numfac',$numfac)
+                             ->where('id_resol',$resol)
                              ->first();
         $id = $factura->cod_ent;
         $fecha = $factura->fecfac;
@@ -611,7 +676,8 @@ class FactController extends Controller
         'dir_ent'     => $entidad->DIR_ENT,
         'tel_ent'     => $entidad->TEL_ENT,
         'numfac'      => $numfac,
-        'estfac'      => $factura->estfac
+        'estfac'      => $factura->estfac,
+        'resol'       => $resol,
         ]);
          $pdf = \App::make('dompdf.wrapper');
       $pdf->loadHTML($view);
@@ -624,13 +690,23 @@ class FactController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function listtmp()
+    public function listtmp($tipo_fac)
     {
+      if($tipo_fac=="SERVICIO"){
        $detser =  TmpFact::join('servicios', 'servicios.COD_SER', '=', 'tmpfact.idserv')
                 ->select('cantserv','NOM_SER', 'valserv' )
                 ->get();
 
         return $detser; 
+      }
+      else{
+        $detpro =  TmpFact2::join('productos', 'productos.COD_PRO', '=', 'tmpfact2.idprod')
+                          ->join('precios','productos.COD_PRO','=','precios.COD_PRO')
+                ->select('cantprod','NOM_PRO', 'valprod', 'valiva', 'ABBR','VAL_IVA')
+                ->get();
+
+        return $detpro; 
+      }
     }
 
     /**
@@ -639,11 +715,24 @@ class FactController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function listser($numfac)
+    public function listser($numfac,$resol)
     {
        $detser =  FacturaDet::join('servicios', 'servicios.COD_SER', '=', 'factura_det.idserv')
                 ->select('idserv','cantserv','NOM_SER', 'valserv' )
                 ->where('numfac',$numfac)
+                ->where('id_resol',$resol)
+                ->get();
+
+        return $detser; 
+    }
+
+    public function listpro($numfac,$resol)
+    {
+       $detser =  FacturaDet2::join('productos', 'productos.COD_PRO', '=', 'factura_det2.idprod')
+                             ->join('precios','productos.COD_PRO','=','precios.COD_PRO')
+                ->select('idprod','cantprod','NOM_PRO', 'valprod','valiva','ABBR','VAL_IVA')
+                ->where('numfac',$numfac)
+                ->where('id_resol',$resol)
                 ->get();
 
         return $detser; 
