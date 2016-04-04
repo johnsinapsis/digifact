@@ -46,6 +46,30 @@ class FactController extends Controller
         return $view;
     }
 
+    public function selectResAnu()
+    { 
+        
+        $config = Configuracion::first();
+        $view = View('pdf.selectResol',[
+            'id'=> '1',
+            'logotipo' => $config->logotipo,
+            'anu' => '1',
+            ]);
+        return $view;
+    }
+
+    public function selectResRad()
+    { 
+        
+        $config = Configuracion::first();
+        $view = View('pdf.selectResol',[
+            'id'=> '1',
+            'logotipo' => $config->logotipo,
+            'rad' => '1',
+            ]);
+        return $view;
+    }
+
 
     public function index(Request $request)
     {
@@ -53,6 +77,42 @@ class FactController extends Controller
       $obj =  new ResulController();
       $resol = $obj->resActiva($request->get('resol'));
       $view = View('liq.viewliq',[
+        'idsel'     => $request->get('resol'),
+        'numressel' => $resol->num_resol,
+        'tipo_fac' => $resol->tipo_fac,
+        'fecsel'    => $resol->fec_resol,
+        'inisel'    => $resol->ini_consec,
+        'finsel'    => $resol->fin_consec,
+        'actsel'    => $resol->act_consec,
+        'prefijo'    => $resol->prefijo,
+            ]);
+        return $view;
+    }
+
+    public function linkanu(Request $request)
+    {
+        
+      $obj =  new ResulController();
+      $resol = $obj->resActiva($request->get('resol'));
+      $view = View('liq.viewanu',[
+        'idsel'     => $request->get('resol'),
+        'numressel' => $resol->num_resol,
+        'tipo_fac' => $resol->tipo_fac,
+        'fecsel'    => $resol->fec_resol,
+        'inisel'    => $resol->ini_consec,
+        'finsel'    => $resol->fin_consec,
+        'actsel'    => $resol->act_consec,
+        'prefijo'    => $resol->prefijo,
+            ]);
+        return $view;
+    } 
+
+    public function linkrad(Request $request)
+    {
+        
+      $obj =  new ResulController();
+      $resol = $obj->resActiva($request->get('resol'));
+      $view = View('liq.viewrad',[
         'idsel'     => $request->get('resol'),
         'numressel' => $resol->num_resol,
         'tipo_fac' => $resol->tipo_fac,
@@ -82,15 +142,18 @@ class FactController extends Controller
             return redirect()->back()->withInput()->withErrors($v->errors());
         }
         else{
-            
+            $obj =  new ResulController();
+            $resol = $obj->resActiva($request->get('resol'));
             $factura = FacturaCab::select('estfac')
                                 ->where('numfac',$request->get('numfac'))
+                                ->where('id_resol',$request->get('resol'))
                               ->first();
             if(($factura->estfac==0)||($factura->estfac==3)){
               return redirect()->back()->withInput()->withErrors('Estado de Factura no válido');
             }
             else{
             FacturaCab::where('numfac',$request->get('numfac'))
+                      ->where('id_resol',$request->get('resol'))  
                     ->update([ 
                                 'estfac' => '0',
                                 'motianu'=> $request->get('motianu'),
@@ -98,7 +161,18 @@ class FactController extends Controller
                                 'usuanu' => Auth::user()->id,
                                 'fecanu' => Carbon::now()->format('Y-m-d')
                         ]);
-           return View('liq.viewanu')->with('mensaje','Factura Anulada Satisfactoriamente');
+           // return View('liq.viewanu')->with('mensaje','Factura Anulada Satisfactoriamente');
+                    return View('liq.viewanu',[
+                        'mensaje'   => 'Factura Anulada'.$request->get('numfac').' Satisfactoriamente',
+                        'idsel'     => $request->get('resol'),
+                        'numressel' => $resol->num_resol,
+                        'tipo_fac'  => $resol->tipo_fac,
+                        'fecsel'    => $resol->fec_resol,
+                        'inisel'    => $resol->ini_consec,
+                        'finsel'    => $resol->fin_consec,
+                        'actsel'    => $resol->act_consec,
+                        'prefijo'    => $resol->prefijo,
+                      ]);
          }
         }
     }
@@ -114,6 +188,7 @@ class FactController extends Controller
     {
         $factura = FacturaCab::select('fecfac')
                              ->where('numfac',$request->get('numfac'))
+                             ->where('id_resol',$request->get('resol'))
                              ->first();
         if($factura)
         $fecha = $factura->fecfac;
@@ -134,14 +209,27 @@ class FactController extends Controller
             return redirect()->back()->withInput()->withErrors($v->errors());
         }
         else{
-            
+            $obj =  new ResulController();
+            $resol = $obj->resActiva($request->get('resol'));
             FacturaCab::where('numfac',$request->get('numfac'))
+                      ->where('id_resol',$request->get('resol'))
                     ->update([ 
                                 'estfac' => '2',
                                 'fecrad'=> $request->get('fecha'),
                                 'usurad'=> Auth::user()->id
                         ]);
-           return View('liq.viewrad')->with('mensaje','Factura Radicada Satisfactoriamente');
+           //return View('liq.viewrad')->with('mensaje','Factura Radicada Satisfactoriamente');
+          return View('liq.viewrad',[
+                        'mensaje'   => 'Factura '.$request->get('numfac').'Radicada Satisfactoriamente',
+                        'idsel'     => $request->get('resol'),
+                        'numressel' => $resol->num_resol,
+                        'tipo_fac'  => $resol->tipo_fac,
+                        'fecsel'    => $resol->fec_resol,
+                        'inisel'    => $resol->ini_consec,
+                        'finsel'    => $resol->fin_consec,
+                        'actsel'    => $resol->act_consec,
+                        'prefijo'    => $resol->prefijo,
+                      ]);
         }
     }
 
@@ -364,7 +452,7 @@ class FactController extends Controller
             if(($estado!=4)&&($fecha==2)){
                 $listfac = FacturaCab::join('factura_det', 'factura_cab.numfac', '=', 'factura_det.numfac')
                            ->join('entidades','entidades.COD_ENT','=','factura_cab.cod_ent')
-                           ->select('factura_cab.numfac as numfac','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
+                           ->select('factura_cab.numfac as numfac','factura_cab.id_resol as idsel','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
                            ->whereBetween('fecfac',[$fecini,$fecfin])
                            ->whereRaw($raw)
                            ->groupBy('factura_cab.numfac','fecfac','cod_ent')
@@ -375,7 +463,7 @@ class FactController extends Controller
 
                 $listfac = FacturaCab::join('factura_det', 'factura_cab.numfac', '=', 'factura_det.numfac')
                            ->join('entidades','entidades.COD_ENT','=','factura_cab.cod_ent')
-                           ->select('factura_cab.numfac as numfac','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
+                           ->select('factura_cab.numfac as numfac','factura_cab.id_resol as idsel','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
                            ->where('fecfac',$fecini)
                            ->whereRaw($raw)
                            ->groupBy('factura_cab.numfac','fecfac','cod_ent')
@@ -387,7 +475,7 @@ class FactController extends Controller
 
                 $listfac = FacturaCab::join('factura_det', 'factura_cab.numfac', '=', 'factura_det.numfac')
                            ->join('entidades','entidades.COD_ENT','=','factura_cab.cod_ent')
-                           ->select('factura_cab.numfac as numfac','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
+                           ->select('factura_cab.numfac as numfac','factura_cab.id_resol as idsel','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
                            ->whereRaw($raw)
                            ->groupBy('factura_cab.numfac','fecfac','cod_ent')
                            ->orderBy('factura_cab.numfac', 'desc')
@@ -398,7 +486,7 @@ class FactController extends Controller
             if(($fact==1)&&($fecha==2)&&($entidad==1)&&($estado==4)){
             $listfac = FacturaCab::join('factura_det', 'factura_cab.numfac', '=', 'factura_det.numfac')
                            ->join('entidades','entidades.COD_ENT','=','factura_cab.cod_ent')
-                           ->select('factura_cab.numfac as numfac','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
+                           ->select('factura_cab.numfac as numfac','factura_cab.id_resol as idsel','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
                            ->where('numfac',$factura)
                            ->whereBetween('fecfac',[$fecini,$fecfin])
                            ->where('factura_cab.cod_ent',$ident)
@@ -409,7 +497,7 @@ class FactController extends Controller
             if(($fact==1)&&($fecha==2)&&($entidad==0)&&($estado==4)){
             $listfac = FacturaCab::join('factura_det', 'factura_cab.numfac', '=', 'factura_det.numfac')
                            ->join('entidades','entidades.COD_ENT','=','factura_cab.cod_ent')
-                           ->select('factura_cab.numfac as numfac','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
+                           ->select('factura_cab.numfac as numfac','factura_cab.id_resol as idsel','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
                            ->where('numfac',$factura)
                            ->whereBetween('fecfac',[$fecini,$fecfin])
                            ->groupBy('numfac','fecfac','cod_ent')
@@ -419,7 +507,7 @@ class FactController extends Controller
             if(($fact==0)&&($fecha==2)&&($entidad==1)&&($estado==4)){
             $listfac = FacturaCab::join('factura_det', 'factura_cab.numfac', '=', 'factura_det.numfac')
                            ->join('entidades','entidades.COD_ENT','=','factura_cab.cod_ent')
-                           ->select('factura_cab.numfac as numfac','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
+                           ->select('factura_cab.numfac as numfac','factura_cab.id_resol as idsel','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
                            ->whereBetween('fecfac',[$fecini,$fecfin])
                            ->where('entidades.COD_ENT',$ident)
                            ->groupBy('numfac','fecfac','cod_ent')
@@ -429,7 +517,7 @@ class FactController extends Controller
             if(($fact==0)&&($fecha==2)&&($entidad==0)&&($estado==4)){
             $listfac = FacturaCab::join('factura_det', 'factura_cab.numfac', '=', 'factura_det.numfac')
                            ->join('entidades','entidades.COD_ENT','=','factura_cab.cod_ent')
-                           ->select('factura_cab.numfac as numfac','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
+                           ->select('factura_cab.numfac as numfac','factura_cab.id_resol as idsel','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
                            ->whereBetween('fecfac',[$fecini,$fecfin])
                            //->whereBetween('fecfac',['2015-11-24','2015-12-10'])
                            ->groupBy('factura_cab.numfac','fecfac','factura_cab.cod_ent')
@@ -440,7 +528,7 @@ class FactController extends Controller
             if(($fact==1)&&($fecha==1)&&($entidad==1)&&($estado==4)){
             $listfac = FacturaCab::join('factura_det', 'factura_cab.numfac', '=', 'factura_det.numfac')
                            ->join('entidades','entidades.COD_ENT','=','factura_cab.cod_ent')
-                           ->select('factura_cab.numfac as numfac','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
+                           ->select('factura_cab.numfac as numfac','factura_cab.id_resol as idsel','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
                            ->where('numfac',$factura)
                            ->where('fecfac',$fecini)
                            ->where('factura_cab.cod_ent',$ident)
@@ -451,7 +539,7 @@ class FactController extends Controller
             if((($fact==1)&&($fecha==1)&&($entidad==0))||(($fact==0)&&($fecha==1)&&($entidad==1))||(($fact==1)&&($fecha==0)&&($entidad==1))&&($estado==4)){
             $listfac = FacturaCab::join('factura_det', 'factura_cab.numfac', '=', 'factura_det.numfac')
                            ->join('entidades','entidades.COD_ENT','=','factura_cab.cod_ent')
-                           ->select('factura_cab.numfac as numfac','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
+                           ->select('factura_cab.numfac as numfac','factura_cab.id_resol as idsel','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
                            ->where($filtro[0])
                            ->where($filtro[1])
                            ->groupBy('numfac','fecfac','cod_ent')
@@ -461,7 +549,7 @@ class FactController extends Controller
             if(($fact==1)&&($fecha==0)&&($entidad==0)||($fact==0)&&($fecha==1)&&($entidad==0)||($fact==0)&&($fecha==0)&&($entidad==1)){
             $listfac = FacturaCab::join('factura_det', 'factura_cab.numfac', '=', 'factura_det.numfac')
                            ->join('entidades','entidades.COD_ENT','=','factura_cab.cod_ent')
-                           ->select('factura_cab.numfac as numfac','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
+                           ->select('factura_cab.numfac as numfac','factura_cab.id_resol as idsel','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
                            ->where($campo[0],$filtro[0])
                            ->groupBy('numfac','fecfac','cod_ent')
                            ->orderBy('numfac', 'desc')
@@ -512,7 +600,7 @@ class FactController extends Controller
                                ->first();
             $numfac = $res->act_consec;
             $tipo_fac = $res->tipo_fac;
-            if($tipo_fac=="SERVICIO")
+            /*if($tipo_fac=="SERVICIO")
             {
             DB::transaction(function () use ($numfac, $fecha,$ident,$idserv,$cant,$valuni,$resol) {
             $cab = new FacturaCab([
@@ -542,9 +630,9 @@ class FactController extends Controller
                     ->update(['act_consec' => $numfac+1]);
                
                 });
-            }
+            } 
             else
-            {
+            {*/
             $idprod = $request->get('idprod');
             $valiva = $request->get('valiva');
             //dd($idprod);
@@ -576,7 +664,7 @@ class FactController extends Controller
           Resolucion::where('id', $resol)
                     ->update(['act_consec' => $numfac+1]);
                  });
-            }
+           // }
             return response()->json(["numfac" => $numfac]);
         }
         
@@ -690,23 +778,23 @@ class FactController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function listtmp($tipo_fac)
+    public function listtmp($nit_ent)
     {
-      if($tipo_fac=="SERVICIO"){
+      /*if($tipo_fac=="SERVICIO"){
        $detser =  TmpFact::join('servicios', 'servicios.COD_SER', '=', 'tmpfact.idserv')
                 ->select('cantserv','NOM_SER', 'valserv' )
                 ->get();
 
         return $detser; 
       }
-      else{
+      else{*/
         $detpro =  TmpFact2::join('productos', 'productos.COD_PRO', '=', 'tmpfact2.idprod')
                           ->join('precios','productos.COD_PRO','=','precios.COD_PRO')
                 ->select('cantprod','NOM_PRO', 'valprod', 'valiva', 'ABBR','VAL_IVA')
+                ->where('COD_ENT','=',$nit_ent)
                 ->get();
-
         return $detpro; 
-      }
+      //}
     }
 
     /**
@@ -726,13 +814,14 @@ class FactController extends Controller
         return $detser; 
     }
 
-    public function listpro($numfac,$resol)
+    public function listpro($numfac,$resol,$nit_ent)
     {
        $detser =  FacturaDet2::join('productos', 'productos.COD_PRO', '=', 'factura_det2.idprod')
                              ->join('precios','productos.COD_PRO','=','precios.COD_PRO')
                 ->select('idprod','cantprod','NOM_PRO', 'valprod','valiva','ABBR','VAL_IVA')
                 ->where('numfac',$numfac)
                 ->where('id_resol',$resol)
+                ->where('COD_ENT','=',$nit_ent)
                 ->get();
 
         return $detser; 
@@ -745,8 +834,10 @@ class FactController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function toplist()
+    public function toplist($tipo_fac)
     {
+       
+      if($tipo_fac=="SERVICIO"){
        $listfac = FacturaCab::join('factura_det', 'factura_cab.numfac', '=', 'factura_det.numfac')
                            ->join('entidades','entidades.COD_ENT','=','factura_cab.cod_ent')
                            ->select('factura_cab.numfac as numfac','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
@@ -754,8 +845,49 @@ class FactController extends Controller
                            ->orderBy('numfac', 'desc')
                            ->take(10)
                            ->get();
+        }
+        else{
+          $listfac = $this->toplist2();
+        }
+        return $listfac; 
+    }
+
+    public function toplist2()
+    {
+       $listfac = FacturaCab::join('entidades','entidades.COD_ENT','=','factura_cab.cod_ent')
+                           ->join('factura_det2', function ($join){
+                            $join->on('factura_cab.numfac', '=', 'factura_det2.numfac')
+                                 ->on('factura_cab.id_resol', '=', 'factura_det2.id_resol');
+                           })
+                           ->select('factura_cab.numfac as numfac','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantprod*valprod) as total'))
+                           ->groupBy('numfac','fecfac','cod_ent')
+                           ->orderBy('numfac', 'desc')
+                           ->take(10)
+                           ->get();
 
         return $listfac; 
+    }
+
+
+    public function toplist3() 
+    {
+
+      $data1 = FacturaCab::join('factura_det', 'factura_cab.numfac', '=', 'factura_det.numfac')
+                           ->join('entidades','entidades.COD_ENT','=','factura_cab.cod_ent')
+                           ->select('factura_cab.numfac as numfac','factura_cab.id_resol as idsel','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantserv*valserv) as total'))
+                           ->groupBy('numfac','fecfac','cod_ent');
+      $listfac = FacturaCab::join('entidades','entidades.COD_ENT','=','factura_cab.cod_ent')
+                           ->join('factura_det2', function ($join){
+                            $join->on('factura_cab.numfac', '=', 'factura_det2.numfac')
+                                 ->on('factura_cab.id_resol', '=', 'factura_det2.id_resol');
+                           })
+                           ->select('factura_cab.numfac as numfac','factura_cab.id_resol as idsel','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantprod*valprod) as total'))
+                           ->groupBy('numfac','fecfac','cod_ent')
+                           ->orderBy('numfac', 'desc')
+                           ->union($data1)
+                           ->take(7)
+                           ->get();
+      return $listfac; 
     }
 
 

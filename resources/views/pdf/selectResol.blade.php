@@ -27,6 +27,12 @@
         <div class="box box-success">
             @if(isset($liqui))
             {!! Form::open(['class' => 'form-horizontal', 'role' => 'form','method' => 'POST','route' => 'resoliq']) !!}
+            @endif
+            @if(isset($anu))
+            {!! Form::open(['class' => 'form-horizontal', 'role' => 'form','method' => 'POST','route' => 'resoanu']) !!}
+            @endif
+            @if(isset($rad))
+            {!! Form::open(['class' => 'form-horizontal', 'role' => 'form','method' => 'POST','route' => 'resolrad']) !!}
             @else
             {!! Form::open(['class' => 'form-horizontal', 'role' => 'form','method' => 'POST','route' => ['pdfview',$id], 'files' => true]) !!}
             @endif

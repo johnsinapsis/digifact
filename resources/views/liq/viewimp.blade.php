@@ -19,7 +19,7 @@
                 <div class="box-body chat" id="chat-box" >
                   <!-- chat item -->
                   <div class="item">
-                    {!! Html::image('dist/img/logosore.png', "User image", array('class' => 'online')) !!}
+                    {!! Html::image('dist/img/logodigi.png', "User image", array('class' => 'online')) !!}
                     <p class="message">
                       <a href="#" class="name">
                         Consulta de Facturas

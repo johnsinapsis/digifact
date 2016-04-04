@@ -213,8 +213,27 @@ Route::group(['middleware' => ['auth','role:2']], function () {
 
 	 Route::any('liq/fact','FactController@store');
 
-	 Route::any('liq/{numfac}',function($numfac){
+	 /*Route::any('liq/{numfac}/{idsel}',function($numfac){
 	 	return View('liq.viewliq')->with('mensaje','Factura '.$numfac.' liquidada Satisfactoriamente');
+	 });*/
+
+	Route::any('liq/{numfac}/{idsel}',function($numfac,$idsel){
+	 	$resol = DB::table('resoluciones')
+	 				->where('id',$idsel)
+	 				->first();
+
+	 				//dd($resol);
+	 	return View('liq.viewliq',[
+	 		'mensaje'   => 'Factura '.$numfac.' liquidada Satisfactoriamente',
+	 		'idsel'     => $idsel,
+       	    'numressel' => $resol->num_resol,
+       	    'tipo_fac'  => $resol->tipo_fac,
+       	    'fecsel'    => $resol->fec_resol,
+       	    'inisel'    => $resol->ini_consec,
+       	    'finsel'    => $resol->fin_consec,
+       	    'actsel'    => $resol->act_consec,
+       	    'prefijo'    => $resol->prefijo,
+	 		]);
 	 });
 
 	 Route::get('pdffact/{numfac}/{resol}', [
@@ -227,9 +246,17 @@ Route::group(['middleware' => ['auth','role:2']], function () {
 
 Route::group(['middleware' => ['auth','role:3']], function () {
 
-	Route::get('anu', function(){
-		return View('liq.viewanu');
-	}); 
+	Route::get('resoanu',[
+		'uses' => 'FactController@selectResAnu',
+		'as' => 'resoanu'
+	 
+	]);
+
+	Route::post('resoanu',[
+		'uses' => 'FactController@linkanu',
+		'as' => 'resoanu'
+	 
+	]);  
 
 	Route::post('anu',[
 		'uses' => 'FactController@validanu',
@@ -263,6 +290,18 @@ Route::group(['middleware' => ['auth','role:4']], function () {
 
 
 Route::group(['middleware' => ['auth','role:5']], function () {
+
+	Route::get('resolrad',[
+		'uses' => 'FactController@selectResRad',
+		'as' => 'resolrad'
+	 
+	]);
+
+	Route::post('resolrad',[
+		'uses' => 'FactController@linkrad',
+		'as' => 'resolrad'
+	 
+	]);  
 
 	Route::get('rad', function(){
 		return View('liq.viewrad');
@@ -344,7 +383,7 @@ Route::group(['middleware' => ['auth','role:10']], function () {
 	 	return View('liq.viewliq')->with('mensaje','Factura '.$numfac.' liquidada Satisfactoriamente');
 	 });
 
-	Route::get('ref/pdffact/{numfac}', [
+	Route::get('ref/pdffact/{numfac}/{resol}', [
 		'uses' => 'FactController@pdfshow',
 		'as' => 'pdffact'
 		]);

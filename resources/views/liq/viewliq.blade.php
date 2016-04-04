@@ -29,11 +29,9 @@
                       </span>
                       @else
                       <span class="name">
-                        @if($tipo_fac=="SERVICIO")
-                        Liquidación de servicios
-                        @else
-                        Liquidación de productos
-                        @endif
+                        
+                        Liquidación de productos / Facturas 
+                        
                       </span>
                       @endif
                     </p>
@@ -66,19 +64,9 @@
                                 </div>
                                 @endif 
                             </div>
-                            @if($tipo_fac=="SERVICIO")
+                            
                             <div class="form-group">
-                              <label class="col-md-4 control-label" >Servicio:</label>
-                                <div class="input-group input-group-sm">
-                                  <input id="servicio" type="text" class="form-control input-sm" name="servicio" style="width:230px;" readonly>
-                                  <input type="hidden" id="idserv" value="0"> 
-                                  <input type="hidden" id="valuni" value="0">
-                                </div>
-                                
-                            </div>
-                            @else
-                            <div class="form-group">
-                              <label class="col-md-4 control-label" >Producto:</label>
+                              <label class="col-md-4 control-label" >Producto / Servicio:</label>
                                 <div class="input-group input-group-sm">
                                   <input id="productob" type="text" class="form-control input-sm" name="productob" style="width:230px;" readonly>
                                   <input type="hidden" id="idprod" value="0"> 
@@ -87,43 +75,34 @@
                                 </div>
                                 
                             </div>
-                            @endif
+                            
                              <div class="form-group">
                                 <label class="col-md-4 control-label">Cantidad:</label>
                                 <div class="input-group col-md-8">
                                 <input id="cantidad" type="number" class="form-control input-sm" name="cantidad" style="width:60px;" readonly>
-                                @if($tipo_fac=="SERVICIO")
-                                <button id="agrefila" type="button" style="margin-left:10px" class="btn btn-primary btn-flat btn-sm" onclick="AgregaFilaServ();" disabled>Agregar</button>
-                                @else
+                                
                                 <button id="agrefila" type="button" style="margin-left:10px" class="btn btn-primary btn-flat btn-sm" onclick="AgregaFilaProd();" disabled>Agregar</button>
-                                @endif
+                                
                                 </div>
                             </div>
                               
                             <div class="form-group">
-                                @if($tipo_fac=="SERVICIO")
-                              <table id="detservi" class="display" cellspacing="0" width="100%">
-                                @else
+                                
                               <table id="detprod" class="display" cellspacing="0" width="100%">
-                                @endif
+                                
         <thead>
             <tr>
-                @if($tipo_fac=="SERVICIO")
-                <th>Servicio</th>
-                @else
-                <th>Producto</th>
-                @endif
+                
+                <th>Producto / Servicio</th>
+                
                 <th>Cant</th>
                 <th>V/unit</th>
-                @if($tipo_fac=="PRODUCTO")
                 <th>IVA</th>
-                @endif
                 <th>V/total</th>
                 <th>oculuni</th>
                 <th>ocultot</th>
-                @if($tipo_fac=="PRODUCTO")
                 <th>oculiva</th>
-                @endif
+                
             </tr>
         </thead>
  
@@ -150,12 +129,10 @@
         </tbody>
     </table>
                       <div class="input-group-btn" align="right">
-                        @if($tipo_fac=="SERVICIO")
-                              <button id="borrafila"  type="button" class="btn btn-danger btn-flat btn-sm" onclick="BorraFilaServ();" disabled>Eliminar</button>
-                        @else
+                        
                                <button id="borrafila"  type="button" class="btn btn-danger btn-flat btn-sm" onclick="BorraFilaProd();" disabled>Eliminar</button>
-                        @endif
-                              </div>
+                        
+                      </div>
                                 
                             </div>                    
                              
@@ -167,17 +144,13 @@
                 </div><!-- /.chat -->
                 <div class="box-footer">
                   <div class="" align="right">
-                  @if($tipo_fac=="SERVICIO")
-                  <button id="previa" type="button" class="btn btn-primary btn-flat" disabled>Previsualizar</button>
-                  @else 
+                  
                   <button id="previa2" type="button" class="btn btn-primary btn-flat" disabled>Previsualizar</button> 
-                  @endif
+                  
                   <button id="modif" type="button" onclick="location.reload();" class="btn btn-primary btn-flat" style="display:none; margin-right:20px;">Modificar todo</button> 
-                  @if($tipo_fac=="SERVICIO")
-                  <button id="liqui" type="button"  class="btn btn-primary btn-flat" style="display:none;">liquidar</button> 
-                  @else
+                  
                   <button id="liqui2" type="button"  class="btn btn-primary btn-flat" style="display:none;">liquidar</button> 
-                  @endif
+                  
                 </div>
               </div>
                {!! Form::close() !!}
@@ -202,7 +175,8 @@
                 <div class="box-body">
                   <ul class="todo-list">
                      @inject('fact','App\Http\Controllers\FactController')
-                     @foreach ($fact->toplist() as $fact)
+                     
+                     @foreach ($fact->toplist2() as $fact)
                     <li>
                       <!-- drag handle -->
                       <span class="handle">
@@ -228,7 +202,7 @@
                       @endif
                       <!-- General tools such as edit or delete-->
                       <div class="tools">
-                        <a href="{{route('pdffact',['numfac'=>$fact->numfac])}}" target="_blank"><i class="fa fa-television"></i></a>
+                        <a href="{{route('pdffact',['numfac'=>$fact->numfac,'resol' => $idsel])}}" target="_blank"><i class="fa fa-television"></i></a>
                       </div>
                     </li>
                     @endforeach      

@@ -52,7 +52,7 @@
                       </span>
                       
                       <!-- todo text -->
-                      <span class="text" style="font-size: 12px;"> <strong>{{$pre->NOM_ENT}}</strong>. <strong>{{$pre->NOM_PRO}}</strong>. Valor:  {{$pre->VAL_PRO}}. IVA: {{$pre->VAL_IVA}}%. </span>
+                      <span class="text" style="font-size: 12px;"> <strong>{{$pre->NOM_ENT}}</strong>. <strong>{{$pre->NOM_PRO}}</strong>. Valor:  {{number_format($pre->VAL_PRO,0)}}. IVA: {{$pre->VAL_IVA}}%. </span>
                       <!-- Emphasis label -->
                     
                       <!-- General tools such as edit or delete-->

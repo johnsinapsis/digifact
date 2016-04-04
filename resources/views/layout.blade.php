@@ -102,11 +102,11 @@
                 
               </a>
               <ul class="treeview-menu">
-                <li><a href="{{route('producto')}}"><i class="fa fa-circle-o"></i> Productos</a></li>
-                <li><a href="{{route('servicio')}}"><i class="fa fa-circle-o"></i> Servicios</a></li>
+                <li><a href="{{route('producto')}}"><i class="fa fa-circle-o"></i> Productos / Servicios</a></li>
+                <!-- <li><a href="{{route('servicio')}}"><i class="fa fa-circle-o"></i> Servicios</a></li> -->
                 <li><a href="{{route('entidad')}}"><i class="fa fa-circle-o"></i> Clientes</a></li>
-                <li><a href="{{route('precios')}}"><i class="fa fa-circle-o"></i> Precios</a></li>
-                <li><a href="{{route('tarifas')}}"><i class="fa fa-circle-o"></i> Tarifas</a></li>
+                <li><a href="{{route('precios')}}"><i class="fa fa-circle-o"></i> Precios / Tarifas</a></li>
+                <!-- <li><a href="{{route('tarifas')}}"><i class="fa fa-circle-o"></i> Tarifas</a></li> -->
               </ul>
             </li>
 

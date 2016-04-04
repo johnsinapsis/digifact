@@ -109,7 +109,7 @@
            <td width="90" align="center" class="titdet"><strong>VALOR TOTAL</strong></td>
        </tr>
        <tr>
-          <td style="height:560px;"></td> <td ></td> <td></td> <td></td>
+          <td style="height:516px; "></td> <td ></td> <td></td> <td></td>
       </tr>
   </table>
   @else
@@ -139,28 +139,30 @@
 @if($resolucion->resActiva($resol)->tipo_fac=='SERVICIO')
 <table class="detaserv" border="0";>
   {{--*/ $tot = 0 /*--}}
+  {{--*/ $iva = 0 /*--}}
   @if (isset($tel_ent))
   @inject('detser','App\Http\Controllers\FactController')
 
   @if(isset($numfac))
-  @foreach ($detser->listser($numfac,$resol) as $detalle)
+  @foreach ($detser->listpro($numfac,$resol,$nit_ent) as $detalle)
   <tr>
-     <td align="right" width="49">{{$detalle->cantserv}}</td>
-     <td align="left" width="230">{{$detalle->NOM_SER}}</td>
-     <td align="right" width="85">{{number_format($detalle->valserv,2)}}</td>
-     <td align="right" width="85">{{number_format($detalle->valserv * $detalle->cantserv,2)}}</td>
+     <td align="right" width="49">{{$detalle->cantprod}}</td>
+     <td align="left" width="230">{{$detalle->NOM_PRO}}</td>
+     <td align="right" width="85">{{number_format($detalle->valprod,2)}}</td>
+     <td align="right" width="85">{{number_format($detalle->valprod * $detalle->cantprod,2)}}</td>
  </tr>
- {{--*/ $tot = $tot + ($detalle->valserv * $detalle->cantserv) /*--}}
+ {{--*/ $tot = $tot + ($detalle->valprod * $detalle->cantprod) /*--}}
  @endforeach
  @else
- @foreach ($detser->listtmp($resolucion->resActiva($resol)->tipo_fac) as $detalle)
+ @foreach ($detser->listtmp($nit_ent) as $detalle)
  <tr>
-  <td align="right" width="49">{{$detalle->cantserv}}</td>
-  <td align="left" width="230">{{$detalle->NOM_SER}}</td>
-  <td align="right" width="85">{{number_format($detalle->valserv,2)}}</td>
-  <td align="right" width="85">{{number_format($detalle->valserv * $detalle->cantserv,2)}}</td>
+  <td align="right" width="49">{{$detalle->cantprod}}</td>
+  <td align="left" width="230">{{$detalle->NOM_PRO}}</td>
+  <td align="right" width="85">{{number_format($detalle->valprod,2)}}</td>
+  <td align="right" width="85">{{number_format($detalle->valprod * $detalle->cantprod,2)}}</td>
 </tr>
-{{--*/ $tot = $tot + ($detalle->valserv * $detalle->cantserv) /*--}}
+{{--*/ $tot = $tot + ($detalle->valprod * $detalle->cantprod) /*--}}
+{{--*/ $iva = $iva + ($detalle->valiva) /*--}}
 @endforeach
 @endif
 @endif
@@ -173,7 +175,7 @@
   @inject('detprod','App\Http\Controllers\FactController')
 
   @if(isset($numfac))
-  @foreach ($detprod->listpro($numfac,$resol) as $detalle)
+  @foreach ($detprod->listpro($numfac,$resol,$nit_ent) as $detalle)
   <tr>
       <td align="right" width="35">{{$detalle->ABBR}}</td>
       <td align="left" width="120">{{$detalle->NOM_PRO}}</td>
@@ -187,7 +189,7 @@
   {{--*/ $iva = $iva + ($detalle->valiva) /*--}}
   @endforeach
   @else
-  @foreach ($detprod->listtmp($resolucion->resActiva($resol)->tipo_fac) as $detalle)
+  @foreach ($detprod->listtmp($nit_ent) as $detalle)
   <tr>
       <td align="right" width="35">{{$detalle->ABBR}}</td>
       <td align="left" width="120">{{$detalle->NOM_PRO}}</td>
@@ -195,7 +197,6 @@
       <td align="right" width="60">{{number_format($detalle->valprod,2)}}</td>
       <td align="right" width="30">{{$detalle->VAL_IVA}}</td>
       <td align="right" width="35">{{number_format($detalle->valiva,2)}}</td>
-
       <td align="right" width="75">{{number_format($detalle->valprod * $detalle->cantprod,2)}}</td>
   </tr>
   {{--*/ $tot = $tot + ($detalle->valprod * $detalle->cantprod) /*--}}
@@ -207,12 +208,33 @@
 @endif
 
 </div>
-@if($resolucion->resActiva($resol)->tipo_fac=='PRODUCTO')
+
 <div class="titsub" ><h3 align="center"><strong>SUBTOTAL</strong></h3></div>
 <div class="titiva" ><h3 align="center"><strong>IVA</strong></h3></div>
-@endif
+
 <div class="tittot" style="page-break-after: avoid;"><h3 align="center"><strong>TOTAL</strong></h3></div>
-@if($resolucion->resActiva($resol)->tipo_fac=='PRODUCTO')
+@if(($resolucion->resActiva($resol)->tipo_fac=='PRODUCTO')||($resolucion->resActiva($resol)->tipo_fac=='PRODUCTO'))
+<div class="valsub">
+  <table>
+      <tr>
+          <td><h3>$</h3></td>
+          <td><div class="divsub"><span class="valtotal">{{number_format($tot,2)}}</span></div></td>
+      </tr>
+  </table>
+</div>
+
+<div class="valiva">
+  <table>
+      <tr>
+          <td><h3>$</h3></td>
+          <td><div class="diviva"><span class="valtotal">{{number_format($iva,2)}}</span></div></td>
+      </tr>
+  </table>
+</div>
+@else
+@inject('factiva','App\Http\Controllers\IvaController')
+{{--*/ $factor = $factiva->show()->valiva/100 /*--}}
+{{--*/ $iva = $tot * $factor /*--}}
 <div class="valsub">
   <table>
       <tr>
@@ -237,11 +259,7 @@
           <td><h3>$</h3></td>
           <td>
             <div class="divtot">
-                @if($resolucion->resActiva($resol)->tipo_fac=='PRODUCTO')
                 <span class="valtotal">{{number_format($tot+$iva,2)}}</span>
-                @else
-                <span class="valtotal">{{number_format($tot,2)}}</span>
-                @endif
             </div>
         </td>
     </tr>

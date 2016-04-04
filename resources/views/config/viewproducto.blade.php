@@ -42,7 +42,7 @@
                           <input id="token" type="hidden" name="_token" value="{{ csrf_token() }}">
                            
                            <div class="form-group">
-                                <label class="col-md-4 control-label">Nombre del Producto:</label>
+                                <label class="col-md-4 control-label">Nombre del Producto / Servicio:</label>
                                 <div class="input-group input-group-sm">                                 
                                     <input id="nomprod" type="text" class="form-control input-sm" name="nomprod"   value="{{$nomprod}}" >
                                 </div>

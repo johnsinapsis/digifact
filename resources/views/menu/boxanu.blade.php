@@ -10,7 +10,7 @@
                 <div class="icon">
                   <i class="ion ion-backspace"></i>
                 </div>
-                <a href="{{route('anu')}}" class="small-box-footer">Gestionar <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="{{route('resoanu')}}" class="small-box-footer">Gestionar <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div><!-- ./col -->
  @endif

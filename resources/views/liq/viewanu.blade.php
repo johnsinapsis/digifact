@@ -17,7 +17,7 @@
                 <div class="box-body chat" id="chat-box" >
                   <!-- chat item -->
                   <div class="item">
-                    {!! Html::image('dist/img/logosore.png', "User image", array('class' => 'online')) !!}
+                    {!! Html::image('dist/img/logodigi.png', "User image", array('class' => 'online')) !!}
                     <p class="message">
                       <a href="#" class="name">
                         Anular Facturas
@@ -28,7 +28,7 @@
                       <div id="formresol">
                         
                           <input id="token" type="hidden" name="_token" value="{{ csrf_token() }}">
-                           
+                          <input id="resol" type="hidden" name="resol" value="{{ $idsel }}"/> 
                            <div class="form-group">
                                 <label class="col-md-4 control-label">Número de Factura:</label>
                                 <div class="input-group input-group-sm">                                 
@@ -93,7 +93,7 @@
                 <div class="box-body">
                   <ul class="todo-list">
                      @inject('fact','App\Http\Controllers\FactController')
-                     @foreach ($fact->toplist() as $fact)
+                     @foreach ($fact->toplist($tipo_fac) as $fact)
                     <li>
                       <!-- drag handle -->
                       <span class="handle">
@@ -111,7 +111,7 @@
                       @endif
                       <!-- General tools such as edit or delete-->
                       <div class="tools">
-                        <a href="{{route('pdffact',['numfac'=>$fact->numfac])}}" target="_blank"><i class="fa fa-television"></i></a>
+                        <a href="{{route('pdffact',['numfac'=>$fact->numfac,'resol' => $idsel])}}" target="_blank"><i class="fa fa-television"></i></a>
                       </div>
                     </li>
                     @endforeach      

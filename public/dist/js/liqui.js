@@ -278,7 +278,7 @@ $("#liqui").click(function(){
        success: function(data) {
                 var pdf = "pdffact/"+data.numfac+"/"+resol;
                 //alert(data.numfac);
-                window.location="liq/"+data.numfac;
+                window.location="liq/"+data.numfac+"/"+resol;
                 window.open(pdf, '_blank');
              }
     });
@@ -324,7 +324,7 @@ $("#liqui2").click(function(){
        success: function(data) {
                 var pdf = "pdffact/"+data.numfac+"/"+resol;
                 //alert(data.numfac);
-                window.location="liq/"+data.numfac;
+                window.location="liq/"+data.numfac+"/"+resol;
                 window.open(pdf, '_blank');
              }
     });

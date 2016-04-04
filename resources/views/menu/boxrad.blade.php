@@ -10,7 +10,7 @@
                 <div class="icon">
                   <i class="ion-ios-checkmark-outline"></i>
                 </div>
-                <a href="{{route('rad')}}" class="small-box-footer">Gestionar <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="{{route('resolrad')}}" class="small-box-footer">Gestionar <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div><!-- ./col -->
  @endif
