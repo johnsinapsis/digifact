@@ -21,6 +21,7 @@ class EntityController extends Controller
     {
         $ent = Entidad::orderBy('NOM_ENT')
                         ->paginate(5);
+        $ent->setPath(route('entidad'));
         return $ent;
     }
 
@@ -46,7 +47,8 @@ class EntityController extends Controller
              'noment' => 'required',
              'nit' => 'required|numeric',
              'dirent' => 'required',
-             'telent' => 'required'
+             'telent' => 'required',
+             'vencim' => 'required|numeric'
             ]);
           if ($v->fails())
         {
@@ -61,6 +63,7 @@ class EntityController extends Controller
                     'CEL_ENT' => $request->get('celent'),
                     'CON_ENT' => $request->get('conent'),
                     'EST_ENT' => $request->get('estado'),
+                    'VEN_ENT' => $request->get('vencim'),
                 ]);
             $ent->save();
             return View('config.viewentidad')->with('mensaje','Cliente Registrado Satisfactoriamente');
@@ -87,6 +90,7 @@ class EntityController extends Controller
             'entidad_tel' => $ent->TEL_ENT,
             'entidad_cel' => $ent->CEL_ENT,
             'entidad_con' => $ent->CON_ENT,
+            'entidad_ven' => $ent->VEN_ENT,
             ]);
         return $view;
     }
@@ -148,6 +152,7 @@ class EntityController extends Controller
             'entidad_tel' => $ent->TEL_ENT,
             'entidad_cel' => $ent->CEL_ENT,
             'entidad_con' => $ent->CON_ENT,
+            'entidad_ven' => $ent->VEN_ENT,
             ]);
         return $view;
     }
@@ -165,7 +170,8 @@ class EntityController extends Controller
              'noment' => 'required',
              'nit' => 'required|numeric',
              'dirent' => 'required',
-             'telent' => 'required'
+             'telent' => 'required',
+             'vencim' => 'required|numeric'
             ]);
           if ($v->fails())
         {
@@ -181,6 +187,7 @@ class EntityController extends Controller
                     'CEL_ENT' => $request->get('celent'),
                     'CON_ENT' => $request->get('conent'),
                     'EST_ENT' => $request->get('estado'),
+                    'VEN_ENT' => $request->get('vencim'),
                         ]); 
             return View('config.viewentidad')->with('mensaje','Cliente Actualizado Satisfactoriamente');
         }

@@ -78,7 +78,7 @@
                 <div class="box-body">
                   <ul class="todo-list">
                      @inject('fact','App\Http\Controllers\FactController')
-                     @foreach ($fact->toplist($tipo_fac) as $fact)
+                     @foreach ($fact->toplist2() as $fact)
                     <li>
                       <!-- drag handle -->
                       <span class="handle">
@@ -100,7 +100,7 @@
                       @endif
                       <!-- General tools such as edit or delete-->
                       <div class="tools">
-                        <a href="{{route('pdffact',['numfac'=>$fact->numfac,'resol' => $idsel])}}" target="_blank"><i class="fa fa-television"></i></a>
+                        <a href="{{route('pdffact',['numfac'=>$fact->numfac,'resol' => $fact->resol])}}" target="_blank"><i class="fa fa-television"></i></a>
                       </div>
                     </li>
                     @endforeach      

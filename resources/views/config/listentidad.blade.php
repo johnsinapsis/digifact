@@ -28,7 +28,7 @@
                       </span>
                       
                       <!-- todo text -->
-                      <span class="text" style="font-size: 12px;"> <strong>{{$entidad_nom}}</strong>. Nit:  {{$entidad_nit}}. Tel: {{$entidad_tel}}. Cel: {{$entidad_cel}}. Contacto: {{$entidad_con}}</span>
+                      <span class="text" style="font-size: 12px;"> <strong>{{$entidad_nom}}</strong>. Nit:  {{$entidad_nit}}. Tel: {{$entidad_tel}}. Cel: {{$entidad_cel}}. Contacto: {{$entidad_con}}. Vencimiento Factura: {{$entidad_ven}} días </span>
                       <!-- Emphasis label -->
                      @if($entidad_est)
                       <small class="label label-success"><i class="fa fa-thumbs-up"></i> Activo</small>
@@ -54,7 +54,7 @@
                       </span>
                       
                       <!-- todo text -->
-                      <span class="text" style="font-size: 12px;"> <strong>{{$ent->NOM_ENT}}</strong>. Nit:  {{$ent->COD_ENT}}. Tel: {{$ent->TEL_ENT}}. Cel: {{$ent->CEL_ENT}}. Contacto: {{$ent->CON_ENT}}</span>
+                      <span class="text" style="font-size: 12px;"> <strong>{{$ent->NOM_ENT}}</strong>. Nit:  {{$ent->COD_ENT}}. Tel: {{$ent->TEL_ENT}}. Cel: {{$ent->CEL_ENT}}. Contacto: {{$ent->CON_ENT}}. Vencimiento Factura: {{$ent->VEN_ENT}} días</span>
                       <!-- Emphasis label -->
                      @if($ent->EST_ENT==1)
                       <small class="label label-success"><i class="fa fa-thumbs-up"></i> Activo</small>

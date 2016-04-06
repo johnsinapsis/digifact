@@ -202,7 +202,7 @@
                       @endif
                       <!-- General tools such as edit or delete-->
                       <div class="tools">
-                        <a href="{{route('pdffact',['numfac'=>$fact->numfac,'resol' => $idsel])}}" target="_blank"><i class="fa fa-television"></i></a>
+                        <a href="{{route('pdffact',['numfac'=>$fact->numfac,'resol' => $fact->resol])}}" target="_blank"><i class="fa fa-television"></i></a>
                       </div>
                     </li>
                     @endforeach      

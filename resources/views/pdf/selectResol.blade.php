@@ -25,6 +25,10 @@
      	</div>
     <section class="col-lg-7 connectedSortable" style="margin-left:20%;">
         <div class="box box-success">
+            @include('partials/errors')
+              @include('partials/success')
+              @include('partials/msg-ok')
+              
             @if(isset($liqui))
             {!! Form::open(['class' => 'form-horizontal', 'role' => 'form','method' => 'POST','route' => 'resoliq']) !!}
             @endif

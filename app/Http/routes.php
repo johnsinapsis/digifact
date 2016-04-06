@@ -258,6 +258,8 @@ Route::group(['middleware' => ['auth','role:3']], function () {
 	 
 	]);  
 
+	
+
 	Route::post('anu',[
 		'uses' => 'FactController@validanu',
 		'as' => 'anu'

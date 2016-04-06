@@ -18,7 +18,7 @@ class Entidad extends Model
      *
      * @var array
      */
-    protected $fillable = ['COD_ENT', 'NOM_ENT', 'DIR_ENT','TEL_ENT','CEL_ENT','CON_ENT','EST_ENT'];
+    protected $fillable = ['COD_ENT', 'NOM_ENT', 'DIR_ENT','TEL_ENT','CEL_ENT','CON_ENT','EST_ENT','VEN_ENT'];
 
     public $timestamps = false;
 

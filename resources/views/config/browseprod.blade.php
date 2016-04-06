@@ -95,7 +95,7 @@
                         <input id="token" type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group">
                                 
-                                <label class="col-md-6 control-label">Nombre del CLiente:</label>
+                                <label class="col-md-6 control-label">Nombre del Cliente:</label>
                                 <br><br>
                                 @if(isset($ent))
                                 <div class="input-group col-md-8">                                 

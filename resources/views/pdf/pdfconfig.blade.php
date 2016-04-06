@@ -41,7 +41,7 @@
            @else
            <td WIDTH="25">DD</td>
            <td WIDTH="25">MM</td>
-           <td WIDTH="35" >AA</td>
+           <td WIDTH="35">AA</td>
            @endif
        </tr>
    </table>
@@ -146,12 +146,13 @@
   @if(isset($numfac))
   @foreach ($detser->listpro($numfac,$resol,$nit_ent) as $detalle)
   <tr>
-     <td align="right" width="49">{{$detalle->cantprod}}</td>
-     <td align="left" width="230">{{$detalle->NOM_PRO}}</td>
+     <td align="center" width="49">{{$detalle->cantprod}}</td>
+     <td align="center" width="230">{{$detalle->NOM_PRO}}</td>
      <td align="right" width="85">{{number_format($detalle->valprod,2)}}</td>
      <td align="right" width="85">{{number_format($detalle->valprod * $detalle->cantprod,2)}}</td>
  </tr>
  {{--*/ $tot = $tot + ($detalle->valprod * $detalle->cantprod) /*--}}
+ {{--*/ $iva = $iva + ($detalle->valiva) /*--}}
  @endforeach
  @else
  @foreach ($detser->listtmp($nit_ent) as $detalle)
@@ -177,9 +178,9 @@
   @if(isset($numfac))
   @foreach ($detprod->listpro($numfac,$resol,$nit_ent) as $detalle)
   <tr>
-      <td align="right" width="35">{{$detalle->ABBR}}</td>
-      <td align="left" width="120">{{$detalle->NOM_PRO}}</td>
-      <td align="right" width="30">{{$detalle->cantprod}}</td>
+      <td align="center" width="35">{{$detalle->ABBR}}</td>
+      <td align="center" width="120">{{$detalle->NOM_PRO}}</td>
+      <td align="center" width="30">{{$detalle->cantprod}}</td>
       <td align="right" width="60">{{number_format($detalle->valprod,2)}}</td>
       <td align="right" width="30">{{$detalle->VAL_IVA}}</td>
       <td align="right" width="35">{{number_format($detalle->valiva,2)}}</td>
@@ -213,7 +214,7 @@
 <div class="titiva" ><h3 align="center"><strong>IVA</strong></h3></div>
 
 <div class="tittot" style="page-break-after: avoid;"><h3 align="center"><strong>TOTAL</strong></h3></div>
-@if(($resolucion->resActiva($resol)->tipo_fac=='PRODUCTO')||($resolucion->resActiva($resol)->tipo_fac=='PRODUCTO'))
+@if(($resolucion->resActiva($resol)->tipo_fac=='PRODUCTO')||($resolucion->resActiva($resol)->tipo_fac=='SERVICIO'))
 <div class="valsub">
   <table>
       <tr>

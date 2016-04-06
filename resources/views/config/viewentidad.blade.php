@@ -22,6 +22,7 @@
                   {{--*/ $telent = $entidad_tel /*--}}
                   {{--*/ $celent = $entidad_cel /*--}}
                   {{--*/ $conent = $entidad_con /*--}}
+                  {{--*/ $vencim = $entidad_ven /*--}}
                   @else
                   {{--*/ $noment = "" /*--}}
                   {{--*/ $codent = "" /*--}}
@@ -30,6 +31,7 @@
                   {{--*/ $telent = "" /*--}}
                   {{--*/ $celent = "" /*--}}
                   {{--*/ $conent = "" /*--}}
+                  {{--*/ $vencim = "" /*--}}
                   @endif
                 </div>
                 <div class="box-body chat" id="chat-box" >
@@ -116,6 +118,15 @@
                                 </div>
                                  
                             </div>  
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Vencimiento Factura:</label>
+                                <div class="input-group input-group-sm">  
+                                   <input id="vencim" type="number" style="width:70px;" class="form-control input-sm" name="vencim" value="{{$vencim}}" > <label class="col-md-1 control-label" style="padding-left:3px;">Días:</label>              
+                                    
+                                </div>
+                                 
+                            </div> 
 
                                      
                       </div>
