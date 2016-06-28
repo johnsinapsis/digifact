@@ -5,11 +5,11 @@
 <div class="container">
   <div class="row">
       @if(Auth::guest())
-      <div class="col-md-4 col-md-offset-2">
+      <div class="col-md-6 col-md-offset-2">
         <div class="panel panel-default">
           <div class="panel-heading"><h3 align="center">Bienvenido</h3></div> 
             <div class="panel-body" style="align">
-              {!! Html::image('dist/img/logo-sadat.png', "Logo", array('width' => '85%', 'height' => '85%', 'style' => 'margin-left:50px')) !!}
+              {!! Html::image('dist/img/logo-deco.png', "Logo", array('width' => '100%', 'height' => '100%')) !!}
             </div>
           </div>
         </div>

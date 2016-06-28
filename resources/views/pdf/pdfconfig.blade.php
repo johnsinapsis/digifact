@@ -147,7 +147,7 @@
   @foreach ($detser->listpro($numfac,$resol,$nit_ent) as $detalle)
   <tr>
      <td align="center" width="49">{{$detalle->cantprod}}</td>
-     <td align="center" width="230">{{$detalle->NOM_PRO}}</td>
+     <td align="left" width="230">{{$detalle->NOM_PRO}}</td>
      <td align="right" width="85">{{number_format($detalle->valprod,2)}}</td>
      <td align="right" width="85">{{number_format($detalle->valprod * $detalle->cantprod,2)}}</td>
  </tr>
@@ -179,12 +179,12 @@
   @foreach ($detprod->listpro($numfac,$resol,$nit_ent) as $detalle)
   <tr>
       <td align="center" width="35">{{$detalle->ABBR}}</td>
-      <td align="center" width="120">{{$detalle->NOM_PRO}}</td>
+      <td align="left" width="120">&nbsp;{{$detalle->NOM_PRO}}</td>
       <td align="center" width="30">{{$detalle->cantprod}}</td>
-      <td align="right" width="60">{{number_format($detalle->valprod,2)}}</td>
-      <td align="right" width="30">{{$detalle->VAL_IVA}}</td>
-      <td align="right" width="35">{{number_format($detalle->valiva,2)}}</td>
-      <td align="right" width="75">{{number_format($detalle->valprod * $detalle->cantprod,2)}}</td>
+      <td align="right" width="58">{{number_format($detalle->valprod,0)}}&nbsp;&nbsp;</td>
+      <td align="center" width="30">{{$detalle->VAL_IVA}}</td>
+      <td align="right" width="30">{{number_format($detalle->valiva,0)}}</td>
+      <td align="right" width="75">{{number_format($detalle->valprod * $detalle->cantprod,0)}}&nbsp;</td>
   </tr>
   {{--*/ $tot = $tot + ($detalle->valprod * $detalle->cantprod) /*--}}
   {{--*/ $iva = $iva + ($detalle->valiva) /*--}}

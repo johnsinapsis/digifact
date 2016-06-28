@@ -558,6 +558,10 @@ Route::group(['middleware' => ['auth','role:16']], function () {
 	 'as' => 'editent'
 	]);
 
+	Route::any('depto','UbiController@list_depto');
+	
+	Route::any('ciudad','UbiController@list_ciudad');
+
 
 });
 

@@ -47,8 +47,8 @@ class EntityController extends Controller
              'noment' => 'required',
              'nit' => 'required|numeric',
              'dirent' => 'required',
-             'telent' => 'required',
-             'vencim' => 'required|numeric'
+             //'telent' => 'required',
+             //'vencim' => 'required|numeric'
             ]);
           if ($v->fails())
         {
@@ -63,7 +63,7 @@ class EntityController extends Controller
                     'CEL_ENT' => $request->get('celent'),
                     'CON_ENT' => $request->get('conent'),
                     'EST_ENT' => $request->get('estado'),
-                    'VEN_ENT' => $request->get('vencim'),
+                    'VEN_ENT' => 30,
                 ]);
             $ent->save();
             return View('config.viewentidad')->with('mensaje','Cliente Registrado Satisfactoriamente');

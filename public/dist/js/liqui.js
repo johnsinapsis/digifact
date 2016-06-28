@@ -443,3 +443,30 @@ function anupago(id){
   }
 
 }
+
+function cargarSelect(origen,destino,op,valor){
+  var val1= $('#'+origen).val();
+  var token = $("#token").val();
+  if (op==1)
+  var route = "depto";
+  if(op==2)
+  var route = "ciudad";
+  $("#"+destino+" option").remove();
+  $.ajax({
+     url: route,
+       headers:{'X-CSRF-TOKEN':token},
+       type: "POST",
+       dataType: "json",
+     data:{cod:val1},
+     success: function(data) {
+                data.forEach(function(i){
+        //console.log(i);
+        if(op==1)
+        $('#'+destino).append("<option value='"+i.dep_codigo+"'>"+i.dep_nombre+"</option>");
+        if(op==2)
+        $('#'+destino).append("<option value='"+i.cod_ciudad+"'>"+i.nom_ciudad+"</option>");
+        });
+             }
+  });
+ 
+}

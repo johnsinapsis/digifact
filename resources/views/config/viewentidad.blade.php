@@ -23,21 +23,27 @@
                   {{--*/ $celent = $entidad_cel /*--}}
                   {{--*/ $conent = $entidad_con /*--}}
                   {{--*/ $vencim = $entidad_ven /*--}}
+                  {{--*/ $paisent= $entidad_pai /*--}}
+                  {{--*/ $dptoent= $entidad_dep /*--}}
+                  {{--*/ $ciuent = $entidad_ciu /*--}}
                   @else
-                  {{--*/ $noment = "" /*--}}
-                  {{--*/ $codent = "" /*--}}
+                  {{--*/ $noment = old('noment') /*--}}
+                  {{--*/ $codent = old('nit') /*--}}
                   {{--*/ $estent = 1 /*--}}
-                  {{--*/ $dirent = "" /*--}}
-                  {{--*/ $telent = "" /*--}}
-                  {{--*/ $celent = "" /*--}}
-                  {{--*/ $conent = "" /*--}}
-                  {{--*/ $vencim = "" /*--}}
+                  {{--*/ $dirent = old('dirent') /*--}}
+                  {{--*/ $telent = old('telent') /*--}}
+                  {{--*/ $celent = old('celent') /*--}}
+                  {{--*/ $conent = old('conent') /*--}}
+                  {{--*/ $vencim = old('vencim') /*--}}
+                  {{--*/ $paisent= 0  /*--}}
+                  {{--*/ $dptoent= 0  /*--}}
+                  {{--*/ $ciuent = 0 /*--}}
                   @endif
                 </div>
                 <div class="box-body chat" id="chat-box" >
                   <!-- chat item -->
                   <div class="item">
-                    {!! Html::image('dist/img/logodigi.png', "User image", array('class' => 'online')) !!}
+                    {!! Html::image('dist/img/logodeco.png', "User image", array('class' => 'online')) !!}
                     <p class="message">
                       <span class="name">
                         Registro de Clientes
@@ -52,7 +58,7 @@
                            <div class="form-group">
                                 <label class="col-md-4 control-label">Nombre del Cliente:</label>
                                 <div class="input-group input-group-sm">                                 
-                                    <input id="noment" type="text" class="form-control input-sm" name="noment"   value="{{$noment}}" >
+                                    <input id="noment" type="text" style="width:320px;" class="form-control input-sm" name="noment"   value="{{$noment}}" >
                                 </div>
                                  
                             </div>
@@ -75,18 +81,70 @@
                             </div> 
 
                             <div class="form-group">
-                                <label class="col-md-4 control-label">Nit:</label>
+                                <label class="col-md-4 control-label">Identificación:</label>
                                 <div class="input-group input-group-sm">  
                                    <input id="nit" type="number"  class="form-control input-sm" name="nit" value="{{$codent}}" >               
                                     
                                 </div>
                                  
-                            </div>   
+                            </div> 
+
+                             <div class="form-group" style="padding-left: 0%; ">
+                                  <label class="col-md-2 control-label" style="text-align: center; ">Ubicación:</label>
+                                  @inject('ubi','App\Http\Controllers\UbiController')
+                                  <div class="col-md-3"> 
+                                    <select id="pais" name="pais" class="form-control"  onchange="cargarSelect('pais','depto','1',''); " >
+                                         @if($paisent==0)
+                                          <option value="0" selected>pais</option>
+                                             @else
+                                                <option value="0">pais</option>
+                                         @endif
+                                        @foreach ($ubi->list_pais() as $pais) 
+                                            @if($pais->id==$paisent)
+                                            <option value="{{$pais->id}}" selected>{{$pais->pai_nombre}}</option>
+                                            @else
+                                            <option value="{{$pais->id}}">{{$pais->pai_nombre}}</option>
+                                            @endif
+   
+                                        @endforeach
+                                      </select>
+                                  </div>
+                                  <div class="col-md-3"> 
+                                    <select id="depto" name="depto" class="form-control" onchange="cargarSelect('depto','ciudad','2','');">
+                                      @if($dptoent==0)
+                                      <option value="0">Depto</option>
+                                      @else
+                                      @foreach($ubi->listdepto($emple_pais) as $depto)
+                                      @if($depto->dep_codigo == $dptoent)
+                                      <option value="{{$depto->dep_codigo}}" selected>{{$depto->dep_nombre}}</option>
+                                      @else
+                                      <option value="{{$depto->dep_codigo}}" >{{$depto->dep_nombre}}</option>
+                                      @endif
+                                      @endforeach
+                                      @endif
+                                    </select>
+                                  </div>
+                                  <div class="col-md-3"> 
+                                    <select id="ciudad" name="ciudad" class="form-control">
+                                      @if($ciuent==0)
+                                      <option value="0">Ciudad</option>
+                                      @else
+                                      @foreach($ubi->listciudad(dptoent) as $ciudad)
+                                      @if($ciudad->cod_ciudad == $ciuent)
+                                      <option value="{{$ciudad->cod_ciudad}}" selected>{{$ciudad->nom_ciudad}}</option>
+                                      @else
+                                      <option value="{{$ciudad->cod_ciudad}}">{{$ciudad->nom_ciudad}}</option>
+                                      @endif
+                                      @endforeach
+                                      @endif
+                                    </select>
+                                  </div>
+                                </div>  
 
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Dirección:</label>
                                 <div class="input-group input-group-sm">  
-                                   <input id="dirent" type="text"  class="form-control input-sm" name="dirent" value="{{$dirent}}" >               
+                                   <input id="dirent" type="text" style="width:320px;" class="form-control input-sm" name="dirent" value="{{$dirent}}" >               
                                     
                                 </div>
                                  
@@ -113,7 +171,7 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Nombre del Contacto:</label>
                                 <div class="input-group input-group-sm">  
-                                   <input id="conent" type="text"  class="form-control input-sm" name="conent" value="{{$conent}}" >               
+                                   <input id="conent" type="text" style="width:320px;"  class="form-control input-sm" name="conent" value="{{$conent}}" >               
                                     
                                 </div>
                                  

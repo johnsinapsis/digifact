@@ -893,7 +893,8 @@ class FactController extends Controller
                             $join->on('factura_cab.numfac', '=', 'factura_det2.numfac')
                                  ->on('factura_cab.id_resol', '=', 'factura_det2.id_resol');
                            })
-                           ->select('factura_cab.numfac as numfac', 'factura_cab.id_resol as resol','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantprod*valprod) as total'))
+                           ->join('resoluciones','factura_cab.id_resol','=','resoluciones.id')
+                           ->select('factura_cab.numfac as numfac', 'factura_cab.id_resol as resol','prefijo','fecfac', 'factura_cab.cod_ent as COD_ENT','NOM_ENT', 'estfac',DB::raw('sum(cantprod*valprod) as total'))
                            ->groupBy('numfac','fecfac','cod_ent')
                            ->orderBy('fecfac', 'desc')
                            ->take(10)
