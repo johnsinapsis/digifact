@@ -5,7 +5,7 @@
                  
                   <i class="fa fa-television"></i>
                   <h3 class="box-title">
-                    @if (isset($prod))
+                    @if (isset($prod)||isset($fab))
                     Búsqueda rápida de productos
                     @endif
                     @if (isset($serv))
@@ -51,9 +51,13 @@
 
                     <!-- formulario para los productos -->
 
-                    @if (isset($prod))
+                    @if (isset($prod)||isset($fab))
                     <div class="jumbotron" style = "height:240px; background-color:gray;" align="center">
+                      @if (isset($prod))
                       {!! Form::open(['class' => 'form-horizontal', 'role' => 'form','method' => 'POST','route' => 'buscaprod']) !!}
+                      @else
+                      {!! Form::open(['class' => 'form-horizontal', 'role' => 'form','method' => 'POST','route' => 'buscafab']) !!}
+                      @endif
                       <div id="formresol">
                         <input id="token" type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="form-group">

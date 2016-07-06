@@ -102,10 +102,10 @@
                 
               </a>
               <ul class="treeview-menu">
-                <li><a href="{{route('producto')}}"><i class="fa fa-circle-o"></i> Productos / Servicios</a></li>
-                <!-- <li><a href="{{route('servicio')}}"><i class="fa fa-circle-o"></i> Servicios</a></li> -->
+                <li><a href="{{route('producto')}}"><i class="fa fa-circle-o"></i> Productos / Insumos </a></li>
+                <li><a href="{{route('fabrica')}}"><i class="fa fa-circle-o"></i> Producción</a></li> 
                 <li><a href="{{route('entidad')}}"><i class="fa fa-circle-o"></i> Clientes</a></li>
-                <li><a href="{{route('precios')}}"><i class="fa fa-circle-o"></i> Precios / Tarifas</a></li>
+                <li><a href="{{route('precios')}}"><i class="fa fa-circle-o"></i> Precios </a></li>
                 <!-- <li><a href="{{route('tarifas')}}"><i class="fa fa-circle-o"></i> Tarifas</a></li> -->
               </ul>
             </li>
@@ -197,6 +197,29 @@
           }
         });
       });
+
+
+       $(document).ready(function(){
+
+        $("#productoc").bind({
+
+        });
+
+        $("#productoc").autocomplete({
+          //dataType: 'json',
+          minLength:3,
+          autoFocus:true,
+          source : "{{URL('fab/autocomplete')}}",
+          //source:disponible,
+          select : function(event, ui){
+            $("#idprodc").val(ui.item.id);
+            $("#labinsu").show();
+            $("#prodinsu").show();
+
+          }
+        });
+      });
+
 
        $(document).ready(function(){
 
@@ -325,22 +348,22 @@
 
        $(document).ready(function(){
 
-        var y = $("#ident").val();
-        var p = "price/autocomplete6?ident="+y;
+        var y = $("#idprodc").val();
+        var p = "fabri/autocomplete?ident="+y;
         //var token = $("#token").val();
-        $("#prodpre").autocomplete({
+        $("#prodinsu").autocomplete({
           //dataType: 'json',
           minLength:3,
           autoFocus:true,
 
           source: function(request,response){
             $.ajax({
-              url:"{{URL('price/autocomplete6')}}",
+              url:"{{URL('fabri/autocomplete')}}",
               //headers:{'X-CSRF-TOKEN':token},
               dataType: "json",
               data: {
                 term: request.term,
-                ident: $("#ident").val(),
+                ident: $("#idprodc").val(),
               },
               success: function(data) {
                response(data);
@@ -348,7 +371,7 @@
             });
           },
           select : function(event, ui){
-            $("#idprod").val(ui.item.id);
+            $("#idinsu").val(ui.item.id);
            
           }
         });

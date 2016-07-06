@@ -20,12 +20,14 @@ class PrecioController extends Controller
      */
     public function index()
     {
+        //dd("hola");
         $prec = Precio:: select('productos.COD_PRO','entidades.COD_ENT','NOM_ENT','NOM_PRO','VAL_PRO','VAL_IVA')
                         ->join('productos','productos.COD_PRO','=','precios.COD_PRO')
                         ->join('entidades','entidades.COD_ENT','=','precios.COD_ENT')
                         ->orderBy('NOM_ENT')
                         ->orderBy('NOM_PRO')
                         ->paginate(5);
+        //dd($prec);
         return $prec;
     }
 

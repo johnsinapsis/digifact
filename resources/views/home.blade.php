@@ -23,6 +23,7 @@
         @include('menu/boximp')
         @include('menu/boxpago')
         @include('menu/boxinfo')
+        @include('menu/boxinv')
         @endif
       </div>
   </div>

@@ -47,6 +47,9 @@ class EntityController extends Controller
              'noment' => 'required',
              'nit' => 'required|numeric',
              'dirent' => 'required',
+             'pais'    => 'exists:par_pais,id',
+             'depto'   => 'required',
+             'ciudad'  => 'required',
              //'telent' => 'required',
              //'vencim' => 'required|numeric'
             ]);
@@ -55,15 +58,18 @@ class EntityController extends Controller
             return redirect()->back()->withInput()->withErrors($v->errors());
         }
         else{
+            //dd($request->get('pais'));
             $ent = new Entidad([
-                    'COD_ENT' => $request->get('nit'),
-                    'NOM_ENT' => $request->get('noment'),
-                    'DIR_ENT' => $request->get('dirent'),
-                    'TEL_ENT' => $request->get('telent'),
-                    'CEL_ENT' => $request->get('celent'),
-                    'CON_ENT' => $request->get('conent'),
-                    'EST_ENT' => $request->get('estado'),
-                    'VEN_ENT' => 30,
+                    'COD_ENT'   => $request->get('nit'),
+                    'NOM_ENT'   => $request->get('noment'),
+                    'PAI_ENT'   => $request->get('pais'),
+                    'DEP_ENT'   => $request->get('depto'),
+                    'CIU_ENT'   => $request->get('ciudad'),
+                    'DIR_ENT'   => $request->get('dirent'),
+                    'TEL_ENT'   => $request->get('telent'),
+                    'CEL_ENT'   => $request->get('celent'),
+                    'EST_ENT'   => $request->get('estado'),
+                    'VEN_ENT'   => 30,
                 ]);
             $ent->save();
             return View('config.viewentidad')->with('mensaje','Cliente Registrado Satisfactoriamente');
@@ -86,6 +92,9 @@ class EntityController extends Controller
             'entidad_nit' => $ent->COD_ENT,
             'entidad_nom' => $ent->NOM_ENT,
             'entidad_est' => $ent->EST_ENT,
+            'entidad_pai' => $ent->PAI_ENT,
+            'entidad_dep' => $ent->DEP_ENT,
+            'entidad_ciu' => $ent->CIU_ENT,
             'entidad_dir' => $ent->DIR_ENT,
             'entidad_tel' => $ent->TEL_ENT,
             'entidad_cel' => $ent->CEL_ENT,
@@ -143,11 +152,14 @@ class EntityController extends Controller
     {
         $ent = Entidad:: where('COD_ENT',$id)
                             ->first();
-        //return View('config.viewproducto');
+        //dd($ent->PAI_DEP);
         $view = View('config.viewentidad',[
             'entidad_nit' => $ent->COD_ENT,
             'entidad_nom' => $ent->NOM_ENT,
             'entidad_est' => $ent->EST_ENT,
+            'entidad_pai' => $ent->PAI_ENT,
+            'entidad_dep' => $ent->DEP_ENT,
+            'entidad_ciu' => $ent->CIU_ENT,
             'entidad_dir' => $ent->DIR_ENT,
             'entidad_tel' => $ent->TEL_ENT,
             'entidad_cel' => $ent->CEL_ENT,
@@ -166,12 +178,16 @@ class EntityController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //dd($request->get('celent'));
         $v = \Validator::make($request->all(), [
              'noment' => 'required',
              'nit' => 'required|numeric',
              'dirent' => 'required',
-             'telent' => 'required',
-             'vencim' => 'required|numeric'
+             'pais'    => 'exists:par_pais,id',
+             'depto'   => 'required',
+             'ciudad'  => 'required',
+             //'telent' => 'required',
+             //'vencim' => 'required|numeric'
             ]);
           if ($v->fails())
         {
@@ -185,9 +201,8 @@ class EntityController extends Controller
                     'DIR_ENT' => $request->get('dirent'),
                     'TEL_ENT' => $request->get('telent'),
                     'CEL_ENT' => $request->get('celent'),
-                    'CON_ENT' => $request->get('conent'),
                     'EST_ENT' => $request->get('estado'),
-                    'VEN_ENT' => $request->get('vencim'),
+                
                         ]); 
             return View('config.viewentidad')->with('mensaje','Cliente Actualizado Satisfactoriamente');
         }

@@ -14,23 +14,7 @@
                 <div class="box-header">
                   <i class="fa fa-cogs"></i>
                   <h3 class="box-title">Parámetros Básicos</h3>
-                  @if(isset($entidad_nit))
-                  {{--*/ $noment = $entidad_nom /*--}}
-                  {{--*/ $codent = $entidad_nit /*--}}
-                  {{--*/ $estent = $entidad_est /*--}}
-                  {{--*/ $dirent = $entidad_dir /*--}}
-                  {{--*/ $telent = $entidad_tel /*--}}
-                  {{--*/ $celent = $entidad_cel /*--}}
-                  {{--*/ $conent = $entidad_con /*--}}
-                  @else
-                  {{--*/ $noment = "" /*--}}
-                  {{--*/ $codent = "" /*--}}
-                  {{--*/ $estent = 1 /*--}}
-                  {{--*/ $dirent = "" /*--}}
-                  {{--*/ $telent = "" /*--}}
-                  {{--*/ $celent = "" /*--}}
-                  {{--*/ $conent = "" /*--}}
-                  @endif
+                  
                 </div>
                 <div class="box-body chat" id="chat-box" >
                   <!-- chat item -->

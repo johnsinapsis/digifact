@@ -28,7 +28,16 @@
                       </span>
                       
                       <!-- todo text -->
-                      <span class="text" style="font-size: 12px;"> <strong>{{$producto_nom}}</strong>. Código:  {{$producto_abr}}.</span>
+                      <span class="text" style="font-size: 12px;"> <strong>{{$producto_nom}}</strong>. 
+                      ({{$producto_med}})
+                      Código:  {{$producto_abr}}.
+                      @if($producto_tip==1)
+                       Producto Terminado
+                       @else
+                       Insumos
+                       @endif
+                      </span>
+                      </span>
                       <!-- Emphasis label -->
                      @if($producto_est)
                       <small class="label label-success"><i class="fa fa-thumbs-up"></i> Activo</small>
@@ -54,7 +63,15 @@
                       </span>
                       
                       <!-- todo text -->
-                      <span class="text" style="font-size: 12px;"> <strong>{{$prod->NOM_PRO}}</strong>. Código:  {{$prod->ABBR}}.</span>
+                      <span class="text" style="font-size: 12px;"> <strong>{{$prod->NOM_PRO}}</strong>. 
+                      ({{$prod->nombre}})
+                      Código:  {{$prod->ABBR}}. 
+                       @if($prod->TIP_PRO==1)
+                       Producto Terminado
+                       @else
+                       Insumos
+                       @endif
+                      </span>
                       <!-- Emphasis label -->
                      @if($prod->EST_PRO==1)
                       <small class="label label-success"><i class="fa fa-thumbs-up"></i> Activo</small>

@@ -18,7 +18,7 @@ class Producto extends Model
      *
      * @var array
      */
-    protected $fillable = ['COD_PRO', 'NOM_PRO', 'EST_PRO','TIP_PRO','ABBR'];
+    protected $fillable = ['COD_PRO', 'NOM_PRO', 'EST_PRO','TIP_PRO','ABBR','UNI_PRO','MIN_PRO','MAX_PRO'];
 
     public $timestamps = false;
 }

@@ -1,5 +1,4 @@
-       
-       $(document).ready(function() {
+$(document).ready(function() {
     $('#detservi').DataTable({
       "paging":   false,
       "searching":false,
@@ -361,6 +360,23 @@ var route = 'erasetar';
       data:{codent:ident,codser:idser},
       success: function(data) {
       window.location.href = "tar_postdelete";
+      }
+     });
+  }
+}
+
+function delete_fabrica(idprod,idinsumo){
+var token = $("#token").val();
+var route = 'erasefabri';
+  if (confirm('¿Estas seguro de eliminar este registro?')){ 
+    $.ajax({
+      url: route,
+      headers:{'X-CSRF-TOKEN':token},
+      type: "POST",
+      dataType: "json",
+      data:{idprodc:idprod,idinsu:idinsumo},
+      success: function(data) {
+      window.location.href = "fabri_postdelete";
       }
      });
   }

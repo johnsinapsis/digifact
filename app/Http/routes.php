@@ -137,6 +137,18 @@ Route::group(['middleware' => ['auth','role:2']], function () {
 	 	return Response::json($result);
 	 });
 
+
+	 Route::any('fab/autocomplete', function(){  
+	 	// $term = "med";
+	 	$term = Input::get('term');
+	 	$data = DB::table('productos')->select('COD_PRO','NOM_PRO')->where('TIP_PRO',1)
+	 			    ->where('NOM_PRO','LIKE','%'.$term.'%')->get();
+	 	foreach ($data as $v) {
+	 		$result[] =  array('value' => $v->NOM_PRO, 'id' => $v->COD_PRO);
+	 	}
+	 	return Response::json($result);
+	 });
+
 	 Route::any('serv/autocomplete4', function(){  
 	 	// $term = "med";
 	 	$term = Input::get('term');
@@ -192,14 +204,14 @@ Route::group(['middleware' => ['auth','role:2']], function () {
 	 	return Response::json($result);
 	 });
 
-	 Route::any('tarifa/autocomplete6/', function(){  
+	 Route::any('fabri/autocomplete/', function(){  
 	 	// $term = "med";
 	 	$term = Input::get('term');
-	 	$ident = Input::get('ident');
-	 	$data = DB::select( DB::raw("SELECT COD_SER, NOM_SER FROM servicios where EST_SER = 1 and COD_SER not in (select COD_SER from tarifas where COD_ENT = $ident ) and NOM_SER like '$term%'") );
+	 	$pt = Input::get('ident');
+	 	$data = DB::select( DB::raw("SELECT COD_PRO, NOM_PRO FROM productos where EST_PRO = 1 and TIP_PRO = 2 and COD_PRO not in (select idinsumo from prod_insumo where idprod = $pt ) and NOM_PRO like '$term%'") );
 	 	//$result[0] = array('value' => 'consulta salud', 'id' => $ident);
 	 	foreach ($data as $v) {
-	 		$result[] =  array('value' => $v->NOM_SER, 'id' => $v->COD_SER);
+	 		$result[] =  array('value' => $v->NOM_PRO, 'id' => $v->COD_PRO);
 	 	}
 	 	return Response::json($result);
 	 });
@@ -506,29 +518,29 @@ Route::group(['middleware' => ['auth','role:14']], function () {
 
 Route::group(['middleware' => ['auth','role:15']], function () {
 		
-	Route::get('servicio', function(){
-		return View('config.viewservicio');
-	}); 
+	Route::get('fabrica', function(){
+		return View('config.viewprodInsumo');
+		}); 
 
-		Route::post('upserv/{id}', [
-	 'uses' => 'ServicioController@update',
-	 'as' => 'upserv'
-	]);
-
-	Route::post('servicio', [
-	 'uses' => 'ServicioController@store',
-	 'as' => 'servicio'
-	]);
-
-	Route::post('buscaserv',  [
-		'uses' => 'ServicioController@show',
-		'as' => 'buscaserv'
+		Route::post('fabrica', [
+	 	'uses' => 'FabricaController@store',
+	 	'as' => 'fabrica'
 		]);
 
-	Route::get('editserv/{id}', [
-	 'uses' => 'ServicioController@edit',
-	 'as' => 'editserv'
-	]);
+		Route::post('copiaprec',  [
+		'uses' => 'PrecioController@copiaprec',
+		'as' => 'copiaprec'
+		]);
+
+		Route::post('buscafab',  [
+		'uses' => 'FabricaController@show',
+		'as' => 'buscafab'
+		]);
+
+		Route::any('erasefabri','FabricaController@delete');
+
+
+		Route::get('fabri_postdelete','FabricaController@link_postdelete');
 });
 
 
@@ -624,6 +636,59 @@ Route::group(['middleware' => ['auth','role:18']], function () {
 
 
 	});
+
+
+
+Route::group(['middleware' => ['auth','role:19']], function () {
+
+	Route::get('inventarios', function(){
+		return View('inv.dashboard');
+	}); 
+
+	Route::post('inventarios',[
+		'uses' => 'PagoController@store',
+		'as' => 'inventarios'
+	 
+	]); 
+
+	Route::get('bodega', function(){
+		return View('inv.viewbodega');
+	}); 
+
+	Route::post('bodega',[
+		'uses' => 'PagoController@querypago',
+		'as' => 'bodega'
+	 
+	]); 
+
+	Route::get('infoedad', function(){
+		return View('cartera.viewinfedad');
+	}); 
+
+	Route::post('infoedad',[
+		'uses' => 'PagoController@queryedad',
+		'as' => 'infoedad'
+	 
+	]); 
+
+	Route::get('inforad',[
+		'uses' => 'FactController@queryrad',
+		'as' => 'inforad'
+	 
+	]); 
+
+	Route::get('inforango', function(){
+		return View('cartera.viewinfrango');
+	}); 
+
+	Route::post('inforango',[
+		'uses' => 'FactController@queryrango',
+		'as' => 'inforango'
+	 
+	]);
+
+
+});
 
 
 
